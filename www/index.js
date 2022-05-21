@@ -11,10 +11,11 @@ canvas.height = height;
 
 const ctx = canvas.getContext('2d');
 
+
 const renderLoop = () => {
   universe.tick();
 
-  drawCells();
+  renderCells();
 	// console.log(ctx.getImageData(0,0,canvas.width,canvas.height))
 
   requestAnimationFrame(renderLoop);
@@ -22,16 +23,22 @@ const renderLoop = () => {
 
 const drawCells = () => {
   const cellsPtr = universe.cells();
-  const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
-
+  const cells = new Uint8ClampedArray(memory.buffer, cellsPtr, width * height * 4);
   const imageData = ctx.getImageData(0,0,width,height);
   const img = imageData.data;
   for (let i = 0; i < width*height*4; i++) {
-    img[i]=cells[i/4 | 0]*255
+    img[i]=cells[i]
   } 
 	ctx.putImageData(imageData,0,0)
+  console.log(img, cells)
 };
 
+const renderCells = () => {
+  const cellsPtr = universe.cells();
+  const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, cellsPtr, width * height * 4), width, height);
+  ctx.putImageData(imageData, 0, 0);
+}
 
-drawCells();
+
+renderCells();
 requestAnimationFrame(renderLoop);
