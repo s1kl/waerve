@@ -25,7 +25,7 @@ const renderCells = () => {
   const cellsPtr = universe.cells();
   const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, cellsPtr, width * height * 4), width, height);
   ctx.putImageData(imageData, 0, 0);
-  console.log(imageData.data[0],imageData.data[5]);
+  console.log(imageData.data[0],imageData.data[2200]);
 }
 
 
