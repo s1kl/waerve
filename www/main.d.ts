@@ -1,0 +1,1 @@
+declare module 'wasm-game-of-life/wasm_game_of_life_bg';

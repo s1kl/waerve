@@ -12,7 +12,8 @@ module.exports = {
     new CopyWebpackPlugin(['index.html'])
   ],
   devServer: {
-    port: 8181,
+    host: '0.0.0.0',
+    port: 8086,
     hot: true,
     open: true
   }
