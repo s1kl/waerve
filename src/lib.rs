@@ -1,4 +1,5 @@
-mod utils;
+mod ElectricField;
+
 use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wee_alloc")]
@@ -27,12 +28,13 @@ impl Universe {
 
                 let y = j - self.height / 2;
                 let x = i - self.width / 2;
-                let r = ((x.pow(2) + y.pow(2)) / 2820) as u8;
+                let r = ((x.pow(2) + y.pow(2)) / 2080) as u8;
 
                 let idx = self.get_index(j*4, i*4);
-                next[idx] = r;
-                next[idx+1] += r;
-                next[idx+2] += r / 2;
+                next[idx] += r;
+                next[idx+1] += 1;
+                next[idx+2] += 1;
+                
             }
         }
 
@@ -40,13 +42,13 @@ impl Universe {
     }
 
     pub fn new() -> Universe {
-        let width = 1201 as u32;
-        let height = 1201 as u32;
+        let width = 513 as u32;
+        let height = 513 as u32;
         let n = (width * height * 4) as usize;
 
-        let cells = vec![255; n];
+        let cells: Vec<u8> = vec![255; n];
 
-        Universe {
+        Universe {  
             width,
             height,
             cells,
