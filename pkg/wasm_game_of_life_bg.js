@@ -155,14 +155,14 @@ export class ElectricField {
     */
     width() {
         const ret = wasm.electricfield_width(this.ptr);
-        return ret;
+        return ret >>> 0;
     }
     /**
     * @returns {number}
     */
     height() {
         const ret = wasm.electricfield_height(this.ptr);
-        return ret;
+        return ret >>> 0;
     }
     /**
     * @returns {number}
