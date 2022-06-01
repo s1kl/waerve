@@ -2,15 +2,18 @@
 /* eslint-disable */
 /**
 */
-export class Universe {
+export function init_panic_hook(): void;
+/**
+*/
+export class ElectricField {
   free(): void;
 /**
 */
-  tick(): void;
+  render(): void;
 /**
-* @returns {Universe}
+* @returns {ElectricField}
 */
-  static new(): Universe;
+  static new(): ElectricField;
 /**
 * @returns {number}
 */
@@ -22,5 +25,5 @@ export class Universe {
 /**
 * @returns {number}
 */
-  cells(): number;
+  electric_field_render(): number;
 }

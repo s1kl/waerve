@@ -1,10 +1,16 @@
-mod ElectricField;
+mod electric_field;
 
 use wasm_bindgen::prelude::*;
 
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+#[wasm_bindgen]
+pub fn init_panic_hook() {
+    console_error_panic_hook::set_once();
+}
+
+/*
+// #[cfg(feature = "wee_alloc")]
+// #[global_allocator]
+// static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
 pub struct Universe {
@@ -30,7 +36,7 @@ impl Universe {
                 let x = i - self.width / 2;
                 let r = ((x.pow(2) + y.pow(2)) / 2080) as u8;
 
-                let idx = self.get_index(j*4, i*4);
+                let idx = 4 * self.get_index(j, i);
                 next[idx] += r;
                 next[idx+1] += 1;
                 next[idx+2] += 1;
@@ -67,3 +73,4 @@ impl Universe {
         self.cells.as_ptr()
     }
 }
+*/
