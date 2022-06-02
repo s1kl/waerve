@@ -6,6 +6,7 @@ pub struct ElectricField{
     height: usize,
     electric_field_template_x: Vec<f64>,
     electric_field_template_y: Vec<f64>,
+    electric_field_r: Vec<f64>,
     electric_field_render: Vec<u8>,
 }
 
@@ -19,12 +20,21 @@ impl ElectricField{
     }
 
     fn compression_f64_u8(&self, n: f64) -> u8 {
-        //if n < 0.0 {
-        //    return (n / 898755200.0) as u8;
-        //} else {
-            return (n / 8987552000.0) as u8;
-        //}
+        // 8987552000
+        return (n / 89875.0) as u8;
+        // return (n / 3000000000.0) as u8;
+        // x方向の電界テンプレートがうまく表示されない理由
+        // u8の循環だと思う
+        // rはうまいこと表示されるからまぁいいかな別に
     }
+
+    // fn polar_conversion(&mut self) {
+    //     let width_double = self.width * 2 + 1;
+    //     let height_double = self.height * 2 + 1;
+    //     for j in 0..height_double{
+    //         for i in 0..width_double{
+    //     self.electric_field_r
+    // }
 }
 
 #[wasm_bindgen]
@@ -33,7 +43,8 @@ impl ElectricField{
         let mut next = self.electric_field_render.clone();
         let h = self.height;
         let w = self.width;
-        let efx = &self.electric_field_template_x;
+        // let efx = &self.electric_field_template_x;
+        let efx = &self.electric_field_r;
         for j in 0..h {
             for i in 0..w {
                 let idx = self.get_index_double(j + 128, i + 128);
@@ -55,6 +66,7 @@ impl ElectricField{
         let height_double = height * 2 + 1;
         let mut electric_field_template_x: Vec<f64> = Vec::new();
         let mut electric_field_template_y: Vec<f64> = Vec::new();
+        let mut electric_field_r: Vec<f64> = Vec::new();
         for j in 0..height_double{
             for i in 0..width_double{
                 let y = j - height;
@@ -62,13 +74,16 @@ impl ElectricField{
                 let r: f64 = ((x*x + y*y) as f64).sqrt();
                 let r_three = r * r * r;
                 let e_norm = 8987552000.0 / r_three;
-                let e_x = e_norm * x as f64;
+                let e_r = e_norm * r;
                 let e_y = e_norm * y as f64;
+                let e_x = e_norm * x as f64;
                 electric_field_template_x.push(e_x);
                 electric_field_template_y.push(e_y);
+                electric_field_r.push(e_r);
             }
         }
         let n:usize = width * height * 4;
+        let nn:usize = width_double * height_double;
         let electric_field_render: Vec<u8> = vec![255; n];
     
         ElectricField{
@@ -76,6 +91,7 @@ impl ElectricField{
             height,
             electric_field_template_x,
             electric_field_template_y,
+            electric_field_r,
             electric_field_render,
         }
     }
