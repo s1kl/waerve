@@ -43,6 +43,26 @@ export function init_panic_hook() {
     wasm.init_panic_hook();
 }
 
+/**
+*/
+export function init() {
+    wasm.init();
+}
+
+function _assertClass(instance, klass) {
+    if (!(instance instanceof klass)) {
+        throw new Error(`expected instance of ${klass.name}`);
+    }
+    return instance.ptr;
+}
+/**
+* @param {ElectricField} electric_field
+*/
+export function main(electric_field) {
+    _assertClass(electric_field, ElectricField);
+    wasm.main(electric_field.ptr);
+}
+
 function addHeapObject(obj) {
     if (heap_next === heap.length) heap.push(heap.length + 1);
     const idx = heap_next;
@@ -144,11 +164,6 @@ export class ElectricField {
     static new() {
         const ret = wasm.electricfield_new();
         return ElectricField.__wrap(ret);
-    }
-    /**
-    */
-    render() {
-        wasm.electricfield_render(this.ptr);
     }
     /**
     * @returns {number}
