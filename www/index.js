@@ -15,10 +15,10 @@ const ctx = canvas.getContext('2d');
 
 const render = () => {
   electricField.render();
-  const pointer = electricField.electric_field_render();
+  const pointer = electricField.get_pointer();
   const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, pointer, width * height * 4), width, height);
   ctx.putImageData(imageData, 0, 0);
-  console.log(imageData.data);
+  // console.log(imageData.data);
 }
 
 const renderLoop = () => {
@@ -26,5 +26,5 @@ const renderLoop = () => {
   requestAnimationFrame(renderLoop);
 };
 
-render();
-// requestAnimationFrame(renderLoop);
+//render();
+requestAnimationFrame(renderLoop);

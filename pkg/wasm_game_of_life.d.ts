@@ -8,12 +8,12 @@ export function init_panic_hook(): void;
 export class ElectricField {
   free(): void;
 /**
-*/
-  render(): void;
-/**
 * @returns {ElectricField}
 */
   static new(): ElectricField;
+/**
+*/
+  render(): void;
 /**
 * @returns {number}
 */
@@ -25,5 +25,5 @@ export class ElectricField {
 /**
 * @returns {number}
 */
-  electric_field_render(): number;
+  get_pointer(): number;
 }

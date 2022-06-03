@@ -139,16 +139,16 @@ export class ElectricField {
         wasm.__wbg_electricfield_free(ptr);
     }
     /**
-    */
-    render() {
-        wasm.electricfield_render(this.ptr);
-    }
-    /**
     * @returns {ElectricField}
     */
     static new() {
         const ret = wasm.electricfield_new();
         return ElectricField.__wrap(ret);
+    }
+    /**
+    */
+    render() {
+        wasm.electricfield_render(this.ptr);
     }
     /**
     * @returns {number}
@@ -167,8 +167,8 @@ export class ElectricField {
     /**
     * @returns {number}
     */
-    electric_field_render() {
-        const ret = wasm.electricfield_electric_field_render(this.ptr);
+    get_pointer() {
+        const ret = wasm.electricfield_get_pointer(this.ptr);
         return ret;
     }
 }
