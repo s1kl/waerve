@@ -8,12 +8,6 @@ pub fn init_panic_hook() {
 }
 
 #[wasm_bindgen]
-pub fn init() {
-    let mut electric_field = electric_field::ElectricField::new();
-    electric_field.surpose_electric_field();
-}
-
-#[wasm_bindgen]
 pub fn main(electric_field: &mut electric_field::ElectricField) {
     electric_field.surpose_electric_field();
     electric_field.polar_conversion();

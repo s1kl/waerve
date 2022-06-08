@@ -22,6 +22,7 @@ impl ElectricField{
     }
 
     fn compression_f64_u8(&self, n: f64) -> u8 {
+        // return (n / 550.0) as u8;
         return (n / 8987500000.0) as u8;
     }
 
@@ -35,7 +36,7 @@ impl ElectricField{
         for j in 0..h {
             for i in 0..w {
                 let idx = self.get_index(j, i);
-                let idx_double = self.get_index_double(j,i);
+                let idx_double = self.get_index_double(j + h/2, i + w/2);
                 next_x[idx] = efx[idx_double];
                 next_y[idx] = efy[idx_double];
             }
@@ -60,8 +61,6 @@ impl ElectricField{
     }
 
     pub fn render(&mut self) {
-        // self.surpose_electric_field();
-        // self.polar_conversion();
         let mut next = self.electric_field_render.clone();
         let h = self.height;
         let w = self.width;
@@ -83,6 +82,15 @@ impl ElectricField{
 
 #[wasm_bindgen]
 impl ElectricField{
+    /*
+    ┌───────┬────────┐  1.8987500000.0で割ると良い感じ
+    │       |        │  2.8987500000.0で割ると良い感じ
+    │   1.  |    2.  │  3.8987500000.0で割ると良い感じ
+    ├----------------┤  4.600.0とかで割ると良い感じ
+    │   3.  |    4.  │  一様な値をテンプレートに代入すると普通に一様な結果がrenderingされる
+    │       |        │  やっぱり電界テンプレートの計算がおかしいのかも
+    └───────┴────────┘
+    */
     pub fn new() -> ElectricField{
         let width: usize = 513;
         let height: usize = 513;
@@ -92,13 +100,15 @@ impl ElectricField{
         let mut electric_field_template_y: Vec<f64> = Vec::new();
         for j in 0..height_double{
             for i in 0..width_double{
-                let y = j - height;
-                let x = i - width;
+                let y = if j<height {j - height} else {height - j};
+                let x = if i<width {i - width} else {width - i};
                 let r: f64 = ((x*x + y*y) as f64).sqrt();
                 let r_three = r * r * r;
                 let e_norm = 8987552000.0 / r_three;
-                let e_y = e_norm * y as f64;
-                let e_x = e_norm * x as f64;
+                let e_y = if i>height {e_norm * y as f64} else {-e_norm * y as f64};
+                let e_x = if i>width {e_norm * x as f64} else {-e_norm * x as f64};
+                // electric_field_template_x.push(1271024439182.8);
+                // electric_field_template_y.push(1271024439182.8);
                 electric_field_template_x.push(e_x);
                 electric_field_template_y.push(e_y);
             }

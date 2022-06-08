@@ -43,12 +43,6 @@ export function init_panic_hook() {
     wasm.init_panic_hook();
 }
 
-/**
-*/
-export function init() {
-    wasm.init();
-}
-
 function _assertClass(instance, klass) {
     if (!(instance instanceof klass)) {
         throw new Error(`expected instance of ${klass.name}`);
