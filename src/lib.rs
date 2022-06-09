@@ -1,4 +1,5 @@
 mod electric_field;
+mod charge;
 
 use wasm_bindgen::prelude::*;
 
@@ -8,8 +9,20 @@ pub fn init_panic_hook() {
 }
 
 #[wasm_bindgen]
-pub fn main(electric_field: &mut electric_field::ElectricField) {
-    electric_field.surpose_electric_field();
+pub fn main(electric_field: &mut electric_field::ElectricField, charge: charge::Charge) {
+    electric_field.surpose_electric_field(charge);
     electric_field.polar_conversion();
     electric_field.render();
 }
+
+/*
+置く
+↓
+電界映す←--------
+↓               |
+力(加速度)計算   |
+↓               |	
+速度計算         |
+↓               |
+位置計算---------
+*/

@@ -51,10 +51,14 @@ function _assertClass(instance, klass) {
 }
 /**
 * @param {ElectricField} electric_field
+* @param {Charge} charge
 */
-export function main(electric_field) {
+export function main(electric_field, charge) {
     _assertClass(electric_field, ElectricField);
-    wasm.main(electric_field.ptr);
+    _assertClass(charge, Charge);
+    var ptr0 = charge.ptr;
+    charge.ptr = 0;
+    wasm.main(electric_field.ptr, ptr0);
 }
 
 function addHeapObject(obj) {
@@ -129,6 +133,72 @@ function getInt32Memory0() {
         cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
     }
     return cachegetInt32Memory0;
+}
+/**
+*/
+export class Charge {
+
+    static __wrap(ptr) {
+        const obj = Object.create(Charge.prototype);
+        obj.ptr = ptr;
+
+        return obj;
+    }
+
+    __destroy_into_raw() {
+        const ptr = this.ptr;
+        this.ptr = 0;
+
+        return ptr;
+    }
+
+    free() {
+        const ptr = this.__destroy_into_raw();
+        wasm.__wbg_charge_free(ptr);
+    }
+    /**
+    */
+    get x() {
+        const ret = wasm.__wbg_get_charge_x(this.ptr);
+        return ret >>> 0;
+    }
+    /**
+    * @param {number} arg0
+    */
+    set x(arg0) {
+        wasm.__wbg_set_charge_x(this.ptr, arg0);
+    }
+    /**
+    */
+    get y() {
+        const ret = wasm.__wbg_get_charge_y(this.ptr);
+        return ret >>> 0;
+    }
+    /**
+    * @param {number} arg0
+    */
+    set y(arg0) {
+        wasm.__wbg_set_charge_y(this.ptr, arg0);
+    }
+    /**
+    */
+    get q() {
+        const ret = wasm.__wbg_get_charge_q(this.ptr);
+        return ret;
+    }
+    /**
+    * @param {number} arg0
+    */
+    set q(arg0) {
+        wasm.__wbg_set_charge_q(this.ptr, arg0);
+    }
+    /**
+    * @returns {Charge}
+    */
+    static new() {
+        const ret = wasm.charge_new();
+        return Charge.__wrap(ret);
+    }
 }
 /**
 */

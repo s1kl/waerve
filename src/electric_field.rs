@@ -1,4 +1,5 @@
 use wasm_bindgen::prelude::*;
+use super::charge::Charge;
 
 #[wasm_bindgen]
 pub struct ElectricField{
@@ -23,10 +24,10 @@ impl ElectricField{
 
     fn compression_f64_u8(&self, n: f64) -> u8 {
         // return (n / 550.0) as u8;
-        return (n / 8987500000.0) as u8;
+        return (n / 89875000000.0) as u8;
     }
 
-    pub fn surpose_electric_field(&mut self) {
+    pub fn surpose_electric_field(&mut self, charge: Charge) {
         let mut next_x = self.electric_field_x.clone();
         let mut next_y = self.electric_field_y.clone();
         let h = self.height;
@@ -36,9 +37,9 @@ impl ElectricField{
         for j in 0..h {
             for i in 0..w {
                 let idx = self.get_index(j, i);
-                let idx_double = self.get_index_double(j + h/2, i + w/2);
-                next_x[idx] = efx[idx_double];
-                next_y[idx] = efy[idx_double];
+                let idx_double = self.get_index_double(j + h/2 + charge.y, i + w/2 - charge.x);
+                next_x[idx] = charge.q * efx[idx_double];
+                next_y[idx] = charge.q * efy[idx_double];
             }
         }
         self.electric_field_x = next_x;
@@ -82,15 +83,6 @@ impl ElectricField{
 
 #[wasm_bindgen]
 impl ElectricField{
-    /*
-    ┌───────┬────────┐  1.8987500000.0で割ると良い感じ
-    │       |        │  2.8987500000.0で割ると良い感じ
-    │   1.  |    2.  │  3.8987500000.0で割ると良い感じ
-    ├----------------┤  4.600.0とかで割ると良い感じ
-    │   3.  |    4.  │  一様な値をテンプレートに代入すると普通に一様な結果がrenderingされる
-    │       |        │  やっぱり電界テンプレートの計算がおかしいのかも
-    └───────┴────────┘
-    */
     pub fn new() -> ElectricField{
         let width: usize = 513;
         let height: usize = 513;

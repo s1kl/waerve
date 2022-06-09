@@ -1,11 +1,13 @@
 import { memory } from "../pkg/wasm_game_of_life_bg";
-import { ElectricField, init_panic_hook, main } from "../pkg";
+import { ElectricField, Charge, init_panic_hook, main } from "../pkg";
 
 init_panic_hook();
 
 const electricField = ElectricField.new();
 const width = electricField.width();
 const height = electricField.height();
+
+const charge = Charge.new();
 
 const canvas = document.getElementById("game-of-life-canvas");
 canvas.width = width;
@@ -15,7 +17,7 @@ const ctx = canvas.getContext('2d');
 
 const render = () => {
   // electricField.render();
-  main(electricField);
+  main(electricField, charge);
   const pointer = electricField.get_pointer();
   const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, pointer, width * height * 4), width, height);
   ctx.putImageData(imageData, 0, 0);
