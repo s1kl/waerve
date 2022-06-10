@@ -7,8 +7,6 @@ const electricField = ElectricField.new();
 const width = electricField.width();
 const height = electricField.height();
 
-const charge = Charge.new();
-
 const canvas = document.getElementById("game-of-life-canvas");
 canvas.width = width;
 canvas.height = height;
@@ -17,7 +15,7 @@ const ctx = canvas.getContext('2d');
 
 const render = () => {
   // electricField.render();
-  main(electricField, charge);
+  main(electricField);
   const pointer = electricField.get_pointer();
   const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, pointer, width * height * 4), width, height);
   ctx.putImageData(imageData, 0, 0);
