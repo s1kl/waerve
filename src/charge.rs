@@ -16,10 +16,10 @@ pub struct Charge {
 }
 
 impl Charge{
-    pub fn new(q: f64, x: usize, y: usize) -> Charge{
-        let q: f64 = q;
-        let x: usize = x;
-        let y: usize = y;
+    pub fn new(qi: f64, xi: usize, yi: usize) -> Charge{
+        let q: f64 = qi;
+        let x: usize = xi - 256;
+        let y: usize = yi - 256;
         Charge{
             q,
             x,
