@@ -1,4 +1,3 @@
-use wasm_bindgen::prelude::*;
 // Chargeの配列はwasmとの兼ね合いで無理
 // pub x: Vec<usize>みたいなことも出来ない
 // electric_fieldの中にchargeを入れてみようかな

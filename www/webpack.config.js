@@ -13,7 +13,7 @@ module.exports = {
   ],
   devServer: {
     host: '0.0.0.0',
-    port: 8086,
+    port: 8084,
     hot: true,
     open: true
   }
