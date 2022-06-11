@@ -11,8 +11,8 @@ pub struct Charge {
     pub y: usize,
     vx: f64,
     vy: f64,
-    ax: f64,
-    ay: f64,
+    pub ax: f64,
+    pub ay: f64,
 }
 
 impl Charge{
@@ -29,5 +29,19 @@ impl Charge{
             ax: 0.0,
             ay: 0.0,
         }
+    }
+
+    pub fn calc_velocity_charge(&mut self){
+        let next_x: f64 = self.vx + self.ax * 0.000001;
+        let next_y: f64 = self.vy + self.ay * 0.000001;
+        self.vx = next_x;
+        self.vy = next_y;
+    }
+
+    pub fn calc_position_charge(&mut self){
+        let next_x: f64 = self.x as f64 + self.vx * 0.000001;
+        let next_y: f64 = self.y as f64 + self.vy * 0.000001;
+        self.x = next_x as usize;
+        self.y = next_y as usize;
     }
 }

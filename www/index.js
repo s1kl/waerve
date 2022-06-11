@@ -19,11 +19,11 @@ const render = () => {
   const pointer = electricField.get_pointer();
   const imageData = new ImageData(new Uint8ClampedArray(memory.buffer, pointer, width * height * 4), width, height);
   ctx.putImageData(imageData, 0, 0);
-  console.log(imageData.data);
 }
 
 const renderLoop = () => {
   render();
+  console.log("redered");
   requestAnimationFrame(renderLoop);
 };
 

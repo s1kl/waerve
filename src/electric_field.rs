@@ -25,10 +25,10 @@ impl ElectricField{
     }
 
     fn compression_f64_u8(&self, n: f64) -> u8 {
-        if (n / 90.0) as u8 > 254{
+        if (n / 10000.0) as u8 > 254{
             return 255 as u8;
         }
-        return (n / 90.0) as u8;
+        return (n / 10000.0) as u8;
     }
 
     pub fn surpose_electric_field(&mut self) {
@@ -40,24 +40,46 @@ impl ElectricField{
         let efy = &self.electric_field_template_y;
         let qnum = self.charge_nummber;
         for k in 0..qnum {
+            let l = k as usize;
             for j in 0..h {
                 for i in 0..w {
-                    let l = k as usize;
                     let idx = self.get_index(j, i);
-                    let idx_double = self.get_index_double(j + h/2 + self.charge[l].y, i + w/2 - self.charge[l].x);
+                    let idx_double = self.get_index_double(j + h/2 - self.charge[l].y, i + w/2 - self.charge[l].x);
                     if k == 0{
                         next_x[idx] = self.charge[0].q * efx[idx_double];
                         next_y[idx] = self.charge[0].q * efy[idx_double];
                     }else{
-                        // next_x[idx] += self.charge[l].q * efx[idx_double];
-                        // next_y[idx] += self.charge[l].q * efy[idx_double];
-
+                        next_x[idx] -= self.charge[l].q * efx[idx_double];
+                        next_y[idx] -= self.charge[l].q * efy[idx_double];
+                        
                     }
                 }
             }
         }
+        for k in 0..qnum {
+            let l = k as usize;
+            let idx_next = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
+            self.charge[l].ay = next_y[idx_next];
+            self.charge[l].ax = next_x[idx_next];
+        }
         self.electric_field_x = next_x;
         self.electric_field_y = next_y;
+    }
+
+    pub fn calc_velocity(&mut self) {
+        let qnum = self.charge_nummber;
+        for k in 0..qnum {
+            let l = k as usize;
+            self.charge[l].calc_velocity_charge();
+        }
+    }
+
+    pub fn calc_position(&mut self) {
+        let qnum = self.charge_nummber;
+        for k in 0..qnum {
+            let l = k as usize;
+            self.charge[l].calc_position_charge();
+        }
     }
 
     pub fn polar_conversion(&mut self) {
@@ -70,6 +92,7 @@ impl ElectricField{
             for i in 0..width{
                 let idx = self.get_index(j, i);
                 next_r[idx] = (efx[idx]*efx[idx] + efy[idx]*efy[idx]).sqrt();
+                // next_r[idx] = (efx[idx]*efx[idx]).sqrt();
             }
         }
         self.electric_field_r = next_r;
@@ -110,7 +133,7 @@ impl ElectricField{
                 let x = if i<width {i - width - 1} else {width - i - 1};
                 let r: f64 = ((x*x + y*y) as f64).sqrt();
                 let r_three = r * r * r;
-                let e_norm = 9.0 / r_three;
+                let e_norm = 100.0 / r_three;
                 let e_y = if j<height {e_norm * y as f64} else {-e_norm * y as f64};
                 let e_x = if i<width {-e_norm * x as f64} else {e_norm * x as f64};
                 // electric_field_template_x.push(1271024439182.8);
@@ -126,9 +149,9 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        let c1 = Charge::new(1.0, 200, 256);
+        let c1 = Charge::new(1.0, 250, 290);
         charge.push(c1);
-        let c2 = Charge::new(1.0, 300, 256);
+        let c2 = Charge::new(1.0, 250, 210);
         charge.push(c2);
     
         ElectricField{

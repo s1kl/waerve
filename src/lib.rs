@@ -13,6 +13,8 @@ pub fn main(electric_field: &mut electric_field::ElectricField) {
     electric_field.surpose_electric_field();
     electric_field.polar_conversion();
     electric_field.render();
+    electric_field.calc_velocity();
+    electric_field.calc_position();
 }
 
 /*
