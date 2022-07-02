@@ -49,8 +49,8 @@ impl ElectricField{
                         next_x[idx] = self.charge[0].q * efx[idx_double];
                         next_y[idx] = self.charge[0].q * efy[idx_double];
                     }else{
-                        next_x[idx] -= self.charge[l].q * efx[idx_double];
-                        next_y[idx] -= self.charge[l].q * efy[idx_double];
+                        next_x[idx] += self.charge[l].q * efx[idx_double];
+                        next_y[idx] += self.charge[l].q * efy[idx_double];
                         
                     }
                 }
@@ -92,7 +92,6 @@ impl ElectricField{
             for i in 0..width{
                 let idx = self.get_index(j, i);
                 next_r[idx] = (efx[idx]*efx[idx] + efy[idx]*efy[idx]).sqrt();
-                // next_r[idx] = (efx[idx]*efx[idx]).sqrt();
             }
         }
         self.electric_field_r = next_r;
@@ -129,13 +128,13 @@ impl ElectricField{
         let mut electric_field_template_y: Vec<f64> = Vec::new();
         for j in 0..height_double{
             for i in 0..width_double{
-                let y = if j<height {j - height - 1} else {height - j - 1};
-                let x = if i<width {i - width - 1} else {width - i - 1};
-                let r: f64 = ((x*x + y*y) as f64).sqrt();
+                let y: f64 = height as f64 - j as f64 - 1.0;
+                let x: f64 = width as f64 - i as f64 - 1.0;
+                let r = ((x*x + y*y)).sqrt();
                 let r_three = r * r * r;
-                let e_norm = 100.0 / r_three;
-                let e_y = if j<height {e_norm * y as f64} else {-e_norm * y as f64};
-                let e_x = if i<width {-e_norm * x as f64} else {e_norm * x as f64};
+                let e_norm = 10000000000.0 / r_three;
+                let e_y = e_norm * y;
+                let e_x = e_norm * x;
                 // electric_field_template_x.push(1271024439182.8);
                 // electric_field_template_y.push(1271024439182.8);
                 electric_field_template_x.push(e_x);
@@ -149,9 +148,9 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        let c1 = Charge::new(1.0, 250, 290);
+        let c1 = Charge::new(1.0, 250, 180);
         charge.push(c1);
-        let c2 = Charge::new(1.0, 250, 210);
+        let c2 = Charge::new(1.0, 250, 330);
         charge.push(c2);
     
         ElectricField{
