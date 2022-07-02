@@ -26,5 +26,9 @@ export class ElectricField {
 /**
 * @returns {number}
 */
+  charge_ax(): number;
+/**
+* @returns {number}
+*/
   get_pointer(): number;
 }

@@ -44,4 +44,8 @@ impl Charge{
         self.x = next_x as usize;
         self.y = next_y as usize;
     }
+
+    pub fn ax(&self) -> usize {
+        self.x
+    }
 }

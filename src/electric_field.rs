@@ -35,7 +35,9 @@ impl ElectricField{
         let mut next_x = self.electric_field_x.clone();
         let mut next_y = self.electric_field_y.clone();
         let h = self.height;
+        let hp2: usize = self.height / 2;
         let w = self.width;
+        let wp2: usize = self.width / 2;
         let efx = &self.electric_field_template_x;
         let efy = &self.electric_field_template_y;
         let qnum = self.charge_nummber;
@@ -44,7 +46,7 @@ impl ElectricField{
             for j in 0..h {
                 for i in 0..w {
                     let idx = self.get_index(j, i);
-                    let idx_double = self.get_index_double(j + h/2 - self.charge[l].y, i + w/2 - self.charge[l].x);
+                    let idx_double = self.get_index_double(j + hp2 - self.charge[l].y, i + wp2 - self.charge[l].x);
                     if k == 0{
                         next_x[idx] = self.charge[0].q * efx[idx_double];
                         next_y[idx] = self.charge[0].q * efy[idx_double];
@@ -56,9 +58,12 @@ impl ElectricField{
                 }
             }
         }
+        // 加速度計算
         for k in 0..qnum {
             let l = k as usize;
-            let idx_next = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
+            // 座標の取得をなんとかする
+            let idx_next = self.get_index(h/2 - self.charge[l].y, w/2 + self.charge[l].x);
+            // let idx_next = self.get_index(hp2 - self.charge[l].y, wp2 - self.charge[l].x);
             self.charge[l].ay = next_y[idx_next];
             self.charge[l].ax = next_x[idx_next];
         }
@@ -148,10 +153,13 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        let c1 = Charge::new(1.0, 250, 180);
+        let c1 = Charge::new(1.0, 250, 250);
         charge.push(c1);
         let c2 = Charge::new(1.0, 250, 330);
         charge.push(c2);
+        // let c3 = Charge::new(1.0, 100, 100);
+        // charge.push(c3);
+        let qnum = charge.len() as u8;
     
         ElectricField{
             width,
@@ -163,7 +171,7 @@ impl ElectricField{
             electric_field_r,
             electric_field_render,
             charge,
-            charge_nummber: 2,
+            charge_nummber: qnum,
         }
     }
 
@@ -173,6 +181,10 @@ impl ElectricField{
 
     pub fn height(&self) -> usize {
         self.height
+    }
+
+    pub fn charge_ax(&self) -> usize {
+        self.charge[0].ax()
     }
 
     pub fn get_pointer(&self) -> *const u8 {

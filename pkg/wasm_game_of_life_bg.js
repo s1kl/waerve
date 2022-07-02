@@ -176,6 +176,13 @@ export class ElectricField {
     /**
     * @returns {number}
     */
+    charge_ax() {
+        const ret = wasm.electricfield_charge_ax(this.ptr);
+        return ret >>> 0;
+    }
+    /**
+    * @returns {number}
+    */
     get_pointer() {
         const ret = wasm.electricfield_get_pointer(this.ptr);
         return ret;

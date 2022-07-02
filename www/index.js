@@ -22,10 +22,11 @@ const render = () => {
 }
 
 const renderLoop = () => {
+  console.log(electricField.charge_ax());
   render();
-  console.log("redered");
+  console.log(electricField.charge_ax());
   requestAnimationFrame(renderLoop);
 };
 
-render();
-// requestAnimationFrame(renderLoop);
+// render();
+requestAnimationFrame(renderLoop);

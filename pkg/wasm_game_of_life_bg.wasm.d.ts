@@ -5,6 +5,7 @@ export function __wbg_electricfield_free(a: number): void;
 export function electricfield_new(): number;
 export function electricfield_width(a: number): number;
 export function electricfield_height(a: number): number;
+export function electricfield_charge_ax(a: number): number;
 export function electricfield_get_pointer(a: number): number;
 export function init_panic_hook(): void;
 export function main(a: number): void;
