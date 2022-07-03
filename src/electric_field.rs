@@ -35,8 +35,8 @@ impl ElectricField{
         let mut next_x = self.electric_field_x.clone();
         let mut next_y = self.electric_field_y.clone();
         let h = self.height;
-        let hp2: usize = self.height / 2;
         let w = self.width;
+        let hp2: usize = self.height / 2;
         let wp2: usize = self.width / 2;
         let efx = &self.electric_field_template_x;
         let efy = &self.electric_field_template_y;
@@ -58,17 +58,24 @@ impl ElectricField{
                 }
             }
         }
-        // 加速度計算
+        self.electric_field_x = next_x;
+        self.electric_field_y = next_y;
+    }
+
+    pub fn calc_accuration(&mut self) {
+        let qnum = self.charge_nummber;
+        let h = self.height;
+        let w = self.width;
         for k in 0..qnum {
             let l = k as usize;
             // 座標の取得をなんとかする
-            let idx_next = self.get_index(h/2 - self.charge[l].y, w/2 + self.charge[l].x);
-            // let idx_next = self.get_index(hp2 - self.charge[l].y, wp2 - self.charge[l].x);
-            self.charge[l].ay = next_y[idx_next];
-            self.charge[l].ax = next_x[idx_next];
+            let idx_next = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
+            // self.charge[l].ay = self.electric_field_y[idx_next];
+            // self.charge[l].ax = self.electric_field_x[idx_next];
+            self.charge[l].ay = 4.0;
+            self.charge[l].ax = 4.0;
+
         }
-        self.electric_field_x = next_x;
-        self.electric_field_y = next_y;
     }
 
     pub fn calc_velocity(&mut self) {
@@ -106,17 +113,28 @@ impl ElectricField{
         let mut next = self.electric_field_render.clone();
         let h = self.height;
         let w = self.width;
-        let efx = &self.electric_field_r;
+        let efx = &self.electric_field_x;
         for j in 0..h {
             for i in 0..w {
                 let idx = self.get_index(j, i);
                 let idx4 = 4 * idx;
                 let efx_idx = self.compression_f64_u8(efx[idx]);
+                let efx_idxm = self.compression_f64_u8(-efx[idx]);
                 next[idx4] = efx_idx;
-                next[idx4+1] = efx_idx;
-                next[idx4+2] = efx_idx;
+                next[idx4+1] = 0;
+                next[idx4+2] = efx_idxm;
                 
             }
+        }
+        
+        let qnum = self.charge_nummber;
+        let h = self.height;
+        let w = self.width;
+        for k in 0..qnum {
+            let l = k as usize;
+            let idx = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
+            let idx4 = 4 * idx;
+            next[idx4+1] = 255;
         }
         self.electric_field_render = next;
     }
@@ -153,12 +171,11 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        let c1 = Charge::new(1.0, 250, 250);
-        charge.push(c1);
-        let c2 = Charge::new(1.0, 250, 330);
-        charge.push(c2);
-        // let c3 = Charge::new(1.0, 100, 100);
-        // charge.push(c3);
+        // Chargeのとこでx、yからh/2、w/2を引いて座標変換してる処理のせいでヤバい
+        charge.push(Charge::new(1.0, 280, 330));
+        charge.push(Charge::new(1.0, 250, 130));
+        // charge.push(Charge::new(1.0, 50, 430));
+        // charge.push(Charge::new(1.0, 450, 30));
         let qnum = charge.len() as u8;
     
         ElectricField{
@@ -183,8 +200,12 @@ impl ElectricField{
         self.height
     }
 
-    pub fn charge_ax(&self) -> usize {
+    pub fn charge_ax0(&self) -> usize {
         self.charge[0].ax()
+    }
+
+    pub fn charge_ax1(&self) -> usize {
+        self.charge[1].ax()
     }
 
     pub fn get_pointer(&self) -> *const u8 {

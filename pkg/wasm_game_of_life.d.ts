@@ -26,7 +26,11 @@ export class ElectricField {
 /**
 * @returns {number}
 */
-  charge_ax(): number;
+  charge_ax0(): number;
+/**
+* @returns {number}
+*/
+  charge_ax1(): number;
 /**
 * @returns {number}
 */
