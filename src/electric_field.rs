@@ -20,8 +20,16 @@ impl ElectricField{
         (y * self.width + x) as usize
     }
 
+    fn get_index_i(&self, y: isize, x: isize) -> usize {
+        (y * self.width as isize + x).abs() as usize
+    }
+
     fn get_index_double(&self, y: usize, x: usize) -> usize {
         (y * (self.width * 2 + 1) + x) as usize
+    }
+
+    fn get_index_double_i(&self, y: isize, x: isize) -> usize {
+        (y * (self.width * 2 + 1) as isize + x).abs() as usize
     }
 
     fn compression_f64_u8(&self, n: f64) -> u8 {
@@ -36,8 +44,8 @@ impl ElectricField{
         let mut next_y = self.electric_field_y.clone();
         let h = self.height;
         let w = self.width;
-        let hp2: usize = self.height / 2;
-        let wp2: usize = self.width / 2;
+        let hp2: isize = self.height as isize / 2;
+        let wp2: isize = self.width as isize / 2;
         let efx = &self.electric_field_template_x;
         let efy = &self.electric_field_template_y;
         let qnum = self.charge_nummber;
@@ -46,7 +54,7 @@ impl ElectricField{
             for j in 0..h {
                 for i in 0..w {
                     let idx = self.get_index(j, i);
-                    let idx_double = self.get_index_double(j + hp2 - self.charge[l].y, i + wp2 - self.charge[l].x);
+                    let idx_double = self.get_index_double_i(j as isize + hp2 - self.charge[l].y, i as isize + wp2 - self.charge[l].x);
                     if k == 0{
                         next_x[idx] = self.charge[0].q * efx[idx_double];
                         next_y[idx] = self.charge[0].q * efy[idx_double];
@@ -66,14 +74,16 @@ impl ElectricField{
         let qnum = self.charge_nummber;
         let h = self.height;
         let w = self.width;
+        let hp2: isize = self.height as isize / 2;
+        let wp2: isize = self.width as isize / 2;
         for k in 0..qnum {
             let l = k as usize;
             // 座標の取得をなんとかする
-            let idx_next = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
-            // self.charge[l].ay = self.electric_field_y[idx_next];
-            // self.charge[l].ax = self.electric_field_x[idx_next];
-            self.charge[l].ay = 4.0;
-            self.charge[l].ax = 4.0;
+            let idx_next = self.get_index_i(hp2 + self.charge[l].y, wp2 + self.charge[l].x);
+            self.charge[l].ay = self.electric_field_y[idx_next];
+            self.charge[l].ax = self.electric_field_x[idx_next];
+            // self.charge[l].ay = 4.0;
+            // self.charge[l].ax = 4.0;
 
         }
     }
@@ -130,9 +140,11 @@ impl ElectricField{
         let qnum = self.charge_nummber;
         let h = self.height;
         let w = self.width;
+        let hp2: isize = self.height as isize / 2;
+        let wp2: isize = self.width as isize / 2;
         for k in 0..qnum {
             let l = k as usize;
-            let idx = self.get_index(h/2 + self.charge[l].y, w/2 + self.charge[l].x);
+            let idx = self.get_index_i(hp2 + self.charge[l].y, wp2 + self.charge[l].x);
             let idx4 = 4 * idx;
             next[idx4+1] = 255;
         }
@@ -164,6 +176,9 @@ impl ElectricField{
                 electric_field_template_y.push(e_y);
             }
         }
+        let e_center = (height-1) * (width * 2 + 1) + (width-1);
+        electric_field_template_y[e_center] = 0.0;
+        electric_field_template_x[e_center] = 0.0;
         let n:usize = width * height;
         let n_four:usize = 4 * n;
         let electric_field_render: Vec<u8> = vec![255; n_four];
@@ -201,11 +216,27 @@ impl ElectricField{
     }
 
     pub fn charge_ax0(&self) -> usize {
-        self.charge[0].ax()
+        self.get_index_i(self.height() as isize / 2 + self.charge[0].y, self.width as isize / 2 + self.charge[0].x)
+        // self.charge[0].ax()
     }
 
     pub fn charge_ax1(&self) -> usize {
+        self.get_index_i(self.height() as isize / 2 + self.charge[1].y, self.width as isize / 2 + self.charge[1].x)
+        // self.charge[1].ax()
+    }
+
+    pub fn charge_ax3(&self) -> f64 {
+        self.charge[0].ax()
+    }
+
+    pub fn charge_ax4(&self) -> f64 {
         self.charge[1].ax()
+    }
+
+    pub fn tmp(&self) -> f64 {
+        // 電荷の位置において電界がNaNを返す
+        // NaNに和算ないし乗算してもNanから不変
+        self.electric_field_template_x[self.get_index_double(self.height-1, self.width-1)]
     }
 
     pub fn get_pointer(&self) -> *const u8 {

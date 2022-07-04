@@ -7,8 +7,8 @@
 
 pub struct Charge {
     pub q: f64,
-    pub x: usize,
-    pub y: usize,
+    pub x: isize,
+    pub y: isize,
     vx: f64,
     vy: f64,
     pub ax: f64,
@@ -16,10 +16,10 @@ pub struct Charge {
 }
 
 impl Charge{
-    pub fn new(qi: f64, xi: usize, yi: usize) -> Charge{
+    pub fn new(qi: f64, xi: isize, yi: isize) -> Charge{
         let q: f64 = qi;
-        let x: usize = xi - 256;
-        let y: usize = yi - 256;
+        let x: isize = xi - 256;
+        let y: isize = yi - 256;
         Charge{
             q,
             x,
@@ -41,11 +41,11 @@ impl Charge{
     pub fn calc_position_charge(&mut self){
         let next_x: f64 = self.x as f64 + self.vx * 0.000001;
         let next_y: f64 = self.y as f64 + self.vy * 0.000001;
-        self.x = next_x as usize;
-        self.y = next_y as usize;
+        self.x = next_x as isize;
+        self.y = next_y as isize;
     }
 
-    pub fn ax(&self) -> usize {
-        self.x
+    pub fn ax(&self) -> f64 {
+        self.ax
     }
 }

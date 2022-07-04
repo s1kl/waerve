@@ -21,6 +21,9 @@ const render = () => {
   ctx.putImageData(imageData, 0, 0);
   console.log(electricField.charge_ax0());
   console.log(electricField.charge_ax1());
+  console.log(electricField.charge_ax3());
+  console.log(electricField.charge_ax4());
+  console.log(electricField.tmp());
 }
 
 const renderLoop = () => {
