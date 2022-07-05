@@ -176,36 +176,92 @@ export class ElectricField {
     /**
     * @returns {number}
     */
-    charge_ax0() {
-        const ret = wasm.electricfield_charge_ax0(this.ptr);
-        return ret;
-    }
-    /**
-    * @returns {number}
-    */
-    charge_ax1() {
-        const ret = wasm.electricfield_charge_ax1(this.ptr);
-        return ret;
-    }
-    /**
-    * @returns {number}
-    */
-    charge_ax3() {
-        const ret = wasm.electricfield_charge_ax3(this.ptr);
-        return ret;
-    }
-    /**
-    * @returns {number}
-    */
-    charge_ax4() {
-        const ret = wasm.electricfield_charge_ax4(this.ptr);
-        return ret;
-    }
-    /**
-    * @returns {number}
-    */
     get_pointer() {
         const ret = wasm.electricfield_get_pointer(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cx0() {
+        const ret = wasm.electricfield_cx0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cy0() {
+        const ret = wasm.electricfield_cy0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cvx0() {
+        const ret = wasm.electricfield_cvx0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cvy0() {
+        const ret = wasm.electricfield_cvy0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cax0() {
+        const ret = wasm.electricfield_cax0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cay0() {
+        const ret = wasm.electricfield_cay0(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cx1() {
+        const ret = wasm.electricfield_cx1(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cy1() {
+        const ret = wasm.electricfield_cy1(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cvx1() {
+        const ret = wasm.electricfield_cvx1(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cvy1() {
+        const ret = wasm.electricfield_cvy1(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cax1() {
+        const ret = wasm.electricfield_cax1(this.ptr);
+        return ret;
+    }
+    /**
+    * @returns {number}
+    */
+    cay1() {
+        const ret = wasm.electricfield_cay1(this.ptr);
         return ret;
     }
 }

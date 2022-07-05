@@ -26,21 +26,53 @@ export class ElectricField {
 /**
 * @returns {number}
 */
-  charge_ax0(): number;
-/**
-* @returns {number}
-*/
-  charge_ax1(): number;
-/**
-* @returns {number}
-*/
-  charge_ax3(): number;
-/**
-* @returns {number}
-*/
-  charge_ax4(): number;
-/**
-* @returns {number}
-*/
   get_pointer(): number;
+/**
+* @returns {number}
+*/
+  cx0(): number;
+/**
+* @returns {number}
+*/
+  cy0(): number;
+/**
+* @returns {number}
+*/
+  cvx0(): number;
+/**
+* @returns {number}
+*/
+  cvy0(): number;
+/**
+* @returns {number}
+*/
+  cax0(): number;
+/**
+* @returns {number}
+*/
+  cay0(): number;
+/**
+* @returns {number}
+*/
+  cx1(): number;
+/**
+* @returns {number}
+*/
+  cy1(): number;
+/**
+* @returns {number}
+*/
+  cvx1(): number;
+/**
+* @returns {number}
+*/
+  cvy1(): number;
+/**
+* @returns {number}
+*/
+  cax1(): number;
+/**
+* @returns {number}
+*/
+  cay1(): number;
 }
