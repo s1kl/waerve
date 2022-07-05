@@ -42,8 +42,33 @@ impl Charge{
         // マイナスにした途端下のfn axでもfn ax2でも値が更新されない
         let next_x: f64 = self.x as f64 + self.vx * 0.000001;
         let next_y: f64 = self.y as f64 + self.vy * 0.000001;
-        self.x = next_x as isize;
-        self.y = next_y as isize;
+        if next_x > -256.0 && next_x < 256.0{self.x = next_x as isize;}
+        if next_y > -256.0 && next_y < 256.0{self.y = next_y as isize;}
+        // self.x = next_x as isize;
+        // self.y = next_y as isize;
+    }
+
+    pub fn calc_v_p_charge(&mut self){
+        // calc_velocity
+        let next_vx: f64 = self.vx - self.ax * 0.1;
+        let next_vy: f64 = self.vy - self.ay * 0.1;
+        // calc_position
+        let next_rx: f64 = self.x as f64 + next_vx * 0.000001;
+        let next_ry: f64 = self.y as f64 + next_vy * 0.000001;
+        if next_rx > -256.0 && next_rx < 256.0{
+            self.vx = next_vx;
+            self.x = next_rx as isize;
+        }else{
+            self.vx = 0.0; // 完全非弾性
+            // self.vx = -next_vx; // 完全弾性
+            // self.vx = -next=vx * 0.5; // 弾性
+        }
+        if next_ry > -256.0 && next_ry < 256.0{
+            self.vy = next_vy;
+            self.y = next_ry as isize;
+        }else{
+            self.vy = 0.0;
+        }
     }
 
     pub fn ax(&self) -> isize {

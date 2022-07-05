@@ -104,6 +104,14 @@ impl ElectricField{
         }
     }
 
+    pub fn calc_v_p(&mut self) {
+        let qnum = self.charge_nummber;
+        for k in 0..qnum {
+            let l = k as usize;
+            self.charge[l].calc_v_p_charge();
+        }
+    }
+
     pub fn polar_conversion(&mut self) {
         let mut next_r = self.electric_field_r.clone();
         let width = self.width;
