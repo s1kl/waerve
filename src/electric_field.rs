@@ -187,8 +187,8 @@ impl ElectricField{
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
         // Chargeのとこでx、yからh/2、w/2を引いて座標変換してる処理のせいでヤバい
-        charge.push(Charge::new(1.0, 280, 330));
-        charge.push(Charge::new(1.0, 250, 130));
+        charge.push(Charge::new(1.0, 240, 230));
+        charge.push(Charge::new(1.0, 260, 270));
         // charge.push(Charge::new(1.0, 50, 430));
         // charge.push(Charge::new(1.0, 450, 30));
         let qnum = charge.len() as u8;
@@ -215,29 +215,37 @@ impl ElectricField{
         self.height
     }
 
-    pub fn charge_ax0(&self) -> usize {
-        self.get_index_i(self.height() as isize / 2 + self.charge[0].y, self.width as isize / 2 + self.charge[0].x)
-        // self.charge[0].ax()
+    // pub fn charge_ax0(&self) -> usize {
+    //     self.get_index_i(self.height() as isize / 2 + self.charge[0].y, self.width as isize / 2 + self.charge[0].x)
+    //     // self.charge[0].ax()
+    // }
+// 
+    // pub fn charge_ax1(&self) -> usize {
+    //     self.get_index_i(self.height() as isize / 2 + self.charge[1].y, self.width as isize / 2 + self.charge[1].x)
+    //     // self.charge[1].ax()
+    // }
+
+    pub fn charge_ax0(&self) -> isize {
+        self.charge[0].ax2()
     }
 
-    pub fn charge_ax1(&self) -> usize {
-        self.get_index_i(self.height() as isize / 2 + self.charge[1].y, self.width as isize / 2 + self.charge[1].x)
-        // self.charge[1].ax()
+    pub fn charge_ax1(&self) -> isize {
+        self.charge[1].ax2()
     }
 
-    pub fn charge_ax3(&self) -> f64 {
+    pub fn charge_ax3(&self) -> isize {
         self.charge[0].ax()
     }
 
-    pub fn charge_ax4(&self) -> f64 {
+    pub fn charge_ax4(&self) -> isize {
         self.charge[1].ax()
     }
 
-    pub fn tmp(&self) -> f64 {
-        // 電荷の位置において電界がNaNを返す
-        // NaNに和算ないし乗算してもNanから不変
-        self.electric_field_template_x[self.get_index_double(self.height-1, self.width-1)]
-    }
+    // pub fn tmp(&self) -> f64 {
+    //     // 電荷の位置において電界がNaNを返す
+    //     // NaNに和算ないし乗算してもNanから不変
+    //     self.electric_field_template_x[self.get_index_double(self.height-1, self.width-1)]
+    // }
 
     pub fn get_pointer(&self) -> *const u8 {
         self.electric_field_render.as_ptr()

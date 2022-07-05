@@ -178,14 +178,14 @@ export class ElectricField {
     */
     charge_ax0() {
         const ret = wasm.electricfield_charge_ax0(this.ptr);
-        return ret >>> 0;
+        return ret;
     }
     /**
     * @returns {number}
     */
     charge_ax1() {
         const ret = wasm.electricfield_charge_ax1(this.ptr);
-        return ret >>> 0;
+        return ret;
     }
     /**
     * @returns {number}
@@ -199,13 +199,6 @@ export class ElectricField {
     */
     charge_ax4() {
         const ret = wasm.electricfield_charge_ax4(this.ptr);
-        return ret;
-    }
-    /**
-    * @returns {number}
-    */
-    tmp() {
-        const ret = wasm.electricfield_tmp(this.ptr);
         return ret;
     }
     /**

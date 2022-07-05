@@ -42,9 +42,5 @@ export class ElectricField {
 /**
 * @returns {number}
 */
-  tmp(): number;
-/**
-* @returns {number}
-*/
   get_pointer(): number;
 }

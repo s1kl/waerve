@@ -9,7 +9,6 @@ export function electricfield_charge_ax0(a: number): number;
 export function electricfield_charge_ax1(a: number): number;
 export function electricfield_charge_ax3(a: number): number;
 export function electricfield_charge_ax4(a: number): number;
-export function electricfield_tmp(a: number): number;
 export function electricfield_get_pointer(a: number): number;
 export function init_panic_hook(): void;
 export function main(a: number): void;

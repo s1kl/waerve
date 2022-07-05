@@ -32,20 +32,25 @@ impl Charge{
     }
 
     pub fn calc_velocity_charge(&mut self){
-        let next_x: f64 = self.vx + self.ax * 0.000001;
-        let next_y: f64 = self.vy + self.ay * 0.000001;
+        let next_x: f64 = self.vx - self.ax * 0.1;
+        let next_y: f64 = self.vy - self.ay * 0.1;
         self.vx = next_x;
         self.vy = next_y;
     }
 
     pub fn calc_position_charge(&mut self){
+        // マイナスにした途端下のfn axでもfn ax2でも値が更新されない
         let next_x: f64 = self.x as f64 + self.vx * 0.000001;
         let next_y: f64 = self.y as f64 + self.vy * 0.000001;
         self.x = next_x as isize;
         self.y = next_y as isize;
     }
 
-    pub fn ax(&self) -> f64 {
-        self.ax
+    pub fn ax(&self) -> isize {
+        self.y
+    }
+
+    pub fn ax2(&self) -> isize {
+        (self.y as f64 - self.vy) as isize
     }
 }
