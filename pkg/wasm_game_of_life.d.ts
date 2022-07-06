@@ -28,6 +28,12 @@ export class ElectricField {
 */
   get_pointer(): number;
 /**
+* @param {number} q
+* @param {number} x
+* @param {number} y
+*/
+  install_charge(q: number, x: number, y: number): void;
+/**
 * @returns {number}
 */
   cx0(): number;

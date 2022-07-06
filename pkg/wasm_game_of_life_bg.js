@@ -181,6 +181,14 @@ export class ElectricField {
         return ret;
     }
     /**
+    * @param {number} q
+    * @param {number} x
+    * @param {number} y
+    */
+    install_charge(q, x, y) {
+        wasm.electricfield_install_charge(this.ptr, q, x, y);
+    }
+    /**
     * @returns {number}
     */
     cx0() {
