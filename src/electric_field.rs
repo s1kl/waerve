@@ -79,8 +79,8 @@ impl ElectricField{
         for k in 0..qnum {
             let l = k as usize;
             let idx_next = self.get_index_i(hp2 + self.charge[l].y, wp2 + self.charge[l].x);
-            self.charge[l].ay = self.electric_field_y[idx_next];
-            self.charge[l].ax = self.electric_field_x[idx_next];
+            self.charge[l].ay = self.charge[l].q*self.electric_field_y[idx_next];
+            self.charge[l].ax = self.charge[l].q*self.electric_field_x[idx_next];
 
         }
     }
@@ -160,8 +160,8 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize / 2, width, height));
-        charge.push(Charge::new(-1.0, width as isize / 3 , height as isize / 2, width, height));
+        charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize / 2, width, height));
+        charge.push(Charge::new(1.0, width as isize / 3 , height as isize / 2, width, height));
         // charge.push(Charge::new(-1.0, width as isize * 4 / 9 , height as isize * 4 / 9, width, height));
         // charge.push(Charge::new(2.0, width as isize * 5 / 9 , height as isize * 5 / 9, width, height));
         let qnum = charge.len() as u8;
