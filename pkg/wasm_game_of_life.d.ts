@@ -26,6 +26,10 @@ export class ElectricField {
 /**
 * @returns {number}
 */
+  cqn(): number;
+/**
+* @returns {number}
+*/
   get_pointer(): number;
 /**
 * @param {number} q

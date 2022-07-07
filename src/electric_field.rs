@@ -1,8 +1,8 @@
 use wasm_bindgen::prelude::*;
 use super::charge::Charge;
 
-const W_CONST: usize = 769;
-const H_CONST: usize = 769;
+const W_CONST: usize = 513;
+const H_CONST: usize = 513;
 const K_CONST: f64 = 1000000000.0;
 const COLOR_CONST: f64 = 10000.0;
 const COLOR_MAX: u8 = 255;
@@ -160,8 +160,8 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
-        charge.push(Charge::new(1.0, width as isize * 6 / 9 , height as isize * 5 / 9, width, height));
-        charge.push(Charge::new(2.0, width as isize * 5 / 9 , height as isize * 6 / 9, width, height));
+        charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize / 2, width, height));
+        charge.push(Charge::new(-1.0, width as isize / 3 , height as isize / 2, width, height));
         // charge.push(Charge::new(-1.0, width as isize * 4 / 9 , height as isize * 4 / 9, width, height));
         // charge.push(Charge::new(2.0, width as isize * 5 / 9 , height as isize * 5 / 9, width, height));
         let qnum = charge.len() as u8;
@@ -188,12 +188,17 @@ impl ElectricField{
         self.height
     }
 
+    pub fn cqn(&self) -> u8 {
+        self.charge_nummber
+    }
+
     pub fn get_pointer(&self) -> *const u8 {
         self.electric_field_render.as_ptr()
     }
 
     pub fn install_charge(&mut self, q: f64, x: isize, y: isize) {
-        self.charge.push(Charge::new(q, x, y, W_CONST, H_CONST))
+        self.charge.push(Charge::new(q, x, y, W_CONST, H_CONST));
+        self.charge_nummber+=1;
     }
 
     pub fn cx0(&self) -> isize { self.charge[0].x() }

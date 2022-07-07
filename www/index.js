@@ -11,10 +11,10 @@ const height = electricField.height();
 const canvas = document.getElementById("canvas");
 canvas.width = width;
 canvas.height = height;
-const scaleWidth = canvas.clientWidth / canvas.width;
-const scaleHeight = canvas.clientHeight / canvas.height;
+const cwidth = canvas.clientWidth;
+const cheight = canvas.clientHeight;
 
-canvas.addEventListener('click', {scaleWidth: scaleWidth, scaleHeight: scaleHeight, handleEvent: mouse_coordinate});
+canvas.addEventListener('click', {canvasClientWidth: cwidth, canvasClientHeight: cheight, canvasWidth: width, canvasHeight: height, electricField: electricField, handleEvent: mouse_coordinate});
 
 const ctx = canvas.getContext('2d');
 
@@ -31,6 +31,7 @@ const renderLoop = () => {
   // console.log("( x1 , y1 ) = (",electricField.cx1(),",", electricField.cy1(),")");
   // console.log("( vx1 , vy1 ) = (",electricField.cvx1(),",", electricField.cvy1(),")");
   // console.log("( ax1 , ay1 ) = (",electricField.cax1(),",", electricField.cay1(),")");
+  // console.log(electricField.cqn())
   requestAnimationFrame(renderLoop);
 };
 

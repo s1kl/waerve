@@ -5,6 +5,7 @@ export function __wbg_electricfield_free(a: number): void;
 export function electricfield_new(): number;
 export function electricfield_width(a: number): number;
 export function electricfield_height(a: number): number;
+export function electricfield_cqn(a: number): number;
 export function electricfield_get_pointer(a: number): number;
 export function electricfield_install_charge(a: number, b: number, c: number, d: number): void;
 export function electricfield_cx0(a: number): number;
