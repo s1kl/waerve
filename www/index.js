@@ -35,4 +35,5 @@ const renderLoop = () => {
   requestAnimationFrame(renderLoop);
 };
 
+// render();
 requestAnimationFrame(renderLoop);

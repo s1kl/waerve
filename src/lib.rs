@@ -15,6 +15,7 @@ pub fn main(electric_field: &mut electric_field::ElectricField) {
     electric_field.render();
     electric_field.calc_accuration();
     electric_field.calc_v_p();
+    electric_field.colision();
 }
 
 // 次はマウスで電荷を置けるようにする

@@ -2,8 +2,8 @@ pub struct Charge {
     pub q: f64,
     pub x: isize,
     pub y: isize,
-    vx: f64,
-    vy: f64,
+    pub vx: f64,
+    pub vy: f64,
     pub ax: f64,
     pub ay: f64,
     w: usize,
@@ -52,6 +52,16 @@ impl Charge{
             self.vy = -next_vy * dt;
             if next_ry < 0.0 { self.y = -hp2} else { self.y = hp2 }
         }
+    }
+
+    pub fn fix_p(&mut self, x: isize, y: isize) {
+        self.x = x;
+        self.y = y;
+    }
+
+    pub fn fix_v(&mut self, vx: f64, vy: f64) {
+        self.vx = vx;
+        self.vy = vy;
     }
 
     pub fn x(&self) -> isize { self.x }
