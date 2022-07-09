@@ -1,6 +1,6 @@
 import { memory } from "../pkg/wasm_game_of_life_bg";
 import { ElectricField, init_panic_hook, main } from "../pkg";
-import { install, remove } from "./input";
+import { get_mouse_coordinate } from "./input";
 
 init_panic_hook();
 
@@ -14,8 +14,8 @@ canvas.height = height;
 const cwidth = canvas.clientWidth;
 const cheight = canvas.clientHeight;
 const ctx = canvas.getContext('2d');
-
 const input_radio = document.getElementsByName("input_radio");
+let radio = 'install';
 
 const render = () => {
   main(electricField);
@@ -24,13 +24,10 @@ const render = () => {
 
 const renderLoop = () => {
   render();
-  console.log(radio);
   requestAnimationFrame(renderLoop);
 };
 
 requestAnimationFrame(renderLoop);
-
-let radio = 'install';
 
 function radio_situation() {
   for (let i = 0; i < 2; i++){
@@ -41,6 +38,16 @@ function radio_situation() {
   }
 }
 
+function input(e) {
+  const xy = get_mouse_coordinate(e, cwidth,  cheight, width, height)
+  if (radio == 'install') {
+    electricField.install_charge(1.0, xy[0], xy[1], width, height)
+    console.log(radio)
+  } else if (radio == 'remove') {
+    electricField.remove_charge(xy[0], xy[1], width, height)
+    console.log(radio)
+  }
+}
+
 input_radio.forEach(function(e) { e.addEventListener('click', radio_situation) });
-//canvas.addEventListener('click', {canvasClientWidth: cwidth, canvasClientHeight: cheight, canvasWidth: width, canvasHeight: height, electricField: electricField, handleEvent: install});
-canvas.addEventListener('click', {canvasClientWidth: cwidth, canvasClientHeight: cheight, canvasWidth: width, canvasHeight: height, electricField: electricField, handleEvent: remove});
+canvas.addEventListener('click', input);
