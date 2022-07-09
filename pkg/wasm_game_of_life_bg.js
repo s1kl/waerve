@@ -202,6 +202,25 @@ export class ElectricField {
     remove_charge(x, y) {
         wasm.electricfield_remove_charge(this.ptr, x, y);
     }
+    /**
+    * @param {number} x
+    * @param {number} y
+    */
+    can_move_charge(x, y) {
+        wasm.electricfield_can_move_charge(this.ptr, x, y);
+    }
+    /**
+    */
+    cannot_move_charge() {
+        wasm.electricfield_cannot_move_charge(this.ptr);
+    }
+    /**
+    * @returns {boolean}
+    */
+    test2() {
+        const ret = wasm.electricfield_test2(this.ptr);
+        return ret !== 0;
+    }
 }
 
 export function __wbg_new_693216e109162396() {

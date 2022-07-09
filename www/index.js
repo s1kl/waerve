@@ -24,13 +24,14 @@ const render = () => {
 
 const renderLoop = () => {
   render();
+  console.log(electricField.test2())
   requestAnimationFrame(renderLoop);
 };
 
 requestAnimationFrame(renderLoop);
 
 function radio_situation() {
-  for (let i = 0; i < 2; i++){
+  for (let i = 0; i < 3; i++){
     if (input_radio.item(i).checked){
       radio = input_radio.item(i).value;
       break;
@@ -42,12 +43,19 @@ function input(e) {
   const xy = get_mouse_coordinate(e, cwidth,  cheight, width, height)
   if (radio == 'install') {
     electricField.install_charge(1.0, xy[0], xy[1], width, height)
-    console.log(radio)
   } else if (radio == 'remove') {
     electricField.remove_charge(xy[0], xy[1], width, height)
-    console.log(radio)
+  } else if (radio == 'fix') {
+    electricField.can_move_charge(xy[0], xy[1])
+  }
+}
+
+function mouseUp(e) {
+  if (radio == 'fix') {
+    electricField.cannot_move_charge()
   }
 }
 
 input_radio.forEach(function(e) { e.addEventListener('click', radio_situation) });
-canvas.addEventListener('click', input);
+canvas.addEventListener('mousedown', input);
+document.addEventListener('mouseup', mouseUp);

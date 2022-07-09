@@ -42,4 +42,16 @@ export class ElectricField {
 * @param {number} y
 */
   remove_charge(x: number, y: number): void;
+/**
+* @param {number} x
+* @param {number} y
+*/
+  can_move_charge(x: number, y: number): void;
+/**
+*/
+  cannot_move_charge(): void;
+/**
+* @returns {boolean}
+*/
+  test2(): boolean;
 }

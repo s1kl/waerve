@@ -7,6 +7,7 @@ pub struct Charge {
     pub vy: f64,
     pub ax: f64,
     pub ay: f64,
+    pub cm: bool,
     w: usize,
     h: usize,
 }
@@ -26,6 +27,7 @@ impl Charge{
             vy: 0.0,
             ax: 0.0,
             ay: 0.0,
+            cm: false,
             w: w,
             h: h,
         }
@@ -66,4 +68,10 @@ impl Charge{
         self.vx = vx;
         self.vy = vy;
     }
+
+    pub fn can_move(&mut self) {
+        self.cm = !self.cm;
+    }
+
+    pub fn test(&self) -> bool {self.cm}
 }

@@ -308,4 +308,33 @@ impl ElectricField{
             }
         }
     }
+
+    pub fn can_move_charge(&mut self, x: f64, y: f64) {
+        let qnum = self.charge_nummber;
+        let xi = x - self.width as f64 / 2.0;
+        let yi = y - self.height as f64 / 2.0;
+        for k in 0..qnum {
+            let ri = self.charge[k].qs;
+            let rxp = self.charge[k].x as f64 + ri;
+            let ryp = self.charge[k].y as f64 + ri;
+            let rxm = self.charge[k].x as f64 - ri;
+            let rym = self.charge[k].y as f64 - ri;
+            if xi <= rxp && xi >= rxm && yi <= ryp && yi >= rym {
+                self.charge[k].can_move();
+                break;
+            }
+        }
+    }
+
+    pub fn cannot_move_charge(&mut self) {
+        let qnum = self.charge_nummber;
+        for k in 0..qnum {
+            if self.charge[k].cm == true {
+                self.charge[k].can_move();
+                break;
+            }
+        }
+    }
+
+    pub fn test2(&self)->bool{if self.charge_nummber!=0 { self.charge[0].test() } else {false}}
 }
