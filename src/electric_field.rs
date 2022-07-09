@@ -18,7 +18,7 @@ pub struct ElectricField{
     electric_field_r: Vec<f64>,
     electric_field_render: Vec<u8>,
     charge: Vec<Charge>,
-    charge_nummber: u8,
+    charge_nummber: usize,
 }
 
 impl ElectricField{
@@ -51,18 +51,26 @@ impl ElectricField{
         let efx = &self.electric_field_template_x;
         let efy = &self.electric_field_template_y;
         let qnum = self.charge_nummber;
-        for k in 0..qnum {
-            let l = k as usize;
+        if qnum == 0 {
             for j in 0..h {
                 for i in 0..w {
                     let idx = self.get_index(j, i);
-                    let idx_double = self.get_index_double_i(j as isize + hp2 - self.charge[l].y, i as isize + wp2 - self.charge[l].x);
+                    next_x[idx] = 0.0;
+                    next_y[idx] = 0.0;
+                }
+            }
+        }
+        for k in 0..qnum {
+            for j in 0..h {
+                for i in 0..w {
+                    let idx = self.get_index(j, i);
+                    let idx_double = self.get_index_double_i(j as isize + hp2 - self.charge[k].y, i as isize + wp2 - self.charge[k].x);
                     if k == 0{
                         next_x[idx] = self.charge[0].q * efx[idx_double];
                         next_y[idx] = self.charge[0].q * efy[idx_double];
                     }else{
-                        next_x[idx] += self.charge[l].q * efx[idx_double];
-                        next_y[idx] += self.charge[l].q * efy[idx_double];
+                        next_x[idx] += self.charge[k].q * efx[idx_double];
+                        next_y[idx] += self.charge[k].q * efy[idx_double];
                         
                     }
                 }
@@ -77,10 +85,9 @@ impl ElectricField{
         let hp2: isize = self.height as isize / 2;
         let wp2: isize = self.width as isize / 2;
         for k in 0..qnum {
-            let l = k as usize;
-            let idx_next = self.get_index_i(hp2 + self.charge[l].y, wp2 + self.charge[l].x);
-            self.charge[l].ay = self.charge[l].q*self.electric_field_y[idx_next];
-            self.charge[l].ax = self.charge[l].q*self.electric_field_x[idx_next];
+            let idx_next = self.get_index_i(hp2 + self.charge[k].y, wp2 + self.charge[k].x);
+            self.charge[k].ay = self.charge[k].q*self.electric_field_y[idx_next];
+            self.charge[k].ax = self.charge[k].q*self.electric_field_x[idx_next];
 
         }
     }
@@ -88,8 +95,7 @@ impl ElectricField{
     pub fn calc_v_p(&mut self) {
         let qnum = self.charge_nummber;
         for k in 0..qnum {
-            let l = k as usize;
-            self.charge[l].calc_v_p_charge();
+            self.charge[k].calc_v_p_charge();
         }
     }
 
@@ -97,31 +103,29 @@ impl ElectricField{
         let qnum = self.charge_nummber;
         for k in 1..qnum {
             for l in 0..k {
-                let i = k as usize;
-                let j = l as usize;
-                let cix = self.charge[i].x;
-                let ciy = self.charge[i].y;
-                let cjx = self.charge[j].x;
-                let cjy = self.charge[j].y;
+                let cix = self.charge[k].x;
+                let ciy = self.charge[k].y;
+                let cjx = self.charge[l].x;
+                let cjy = self.charge[l].y;
                 let cixf = cix as f64;
                 let ciyf = ciy as f64;
                 let cjxf = cjx as f64;
                 let cjyf = cjy as f64;
                 let distance = (cixf-cjxf)*(cixf-cjxf)+(ciyf-cjyf)*(ciyf-cjyf);
-                let ri = self.charge[i].qs;
-                let rj = self.charge[j].qs;
+                let ri = self.charge[k].qs;
+                let rj = self.charge[l].qs;
                 let radius = (ri + rj) * (ri + rj);
                 if distance<=radius {
                     let rs = (ri + rj) as isize;
                     let e = 0.005;
-                    let vxi = self.charge[i].vx * e;
-                    let vyi = self.charge[i].vy * e;
-                    let vxj = self.charge[j].vx * e;
-                    let vyj = self.charge[j].vy * e;
+                    let vxi = self.charge[k].vx * e;
+                    let vyi = self.charge[k].vy * e;
+                    let vxj = self.charge[l].vx * e;
+                    let vyj = self.charge[l].vy * e;
                     let wp2 = self.width as isize / 2;
                     let hp2 = self.height as isize / 2;
-                    self.charge[i].fix_v(vxj, vyj);
-                    self.charge[j].fix_v(vxi, vyi);
+                    self.charge[k].fix_v(vxj, vyj);
+                    self.charge[l].fix_v(vxi, vyi);
                     let mut cixn;
                     let mut cjxn;
                     let mut ciyn;
@@ -172,8 +176,8 @@ impl ElectricField{
                             ciyn = -hp2+2*rs;
                         }
                     }
-                    self.charge[i].fix_p(cixn, ciyn);
-                    self.charge[j].fix_p(cjxn, cjyn);
+                    self.charge[k].fix_p(cixn, ciyn);
+                    self.charge[l].fix_p(cjxn, cjyn);
                 }
             } 
         }
@@ -248,7 +252,8 @@ impl ElectricField{
         let mut charge: Vec<Charge> = Vec::new();
         charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
         charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
-        let qnum = charge.len() as u8;
+        charge.push(Charge::new(1.0, width as isize *  3 / 4 , height as isize * 1 / 4, width, height));
+        let qnum = charge.len() as usize;
     
         ElectricField{
             width,
@@ -272,7 +277,7 @@ impl ElectricField{
         self.height
     }
 
-    pub fn cqn(&self) -> u8 {
+    pub fn cqn(&self) -> usize {
         self.charge_nummber
     }
 
@@ -285,7 +290,22 @@ impl ElectricField{
         self.charge_nummber+=1;
     }
 
-    // pub fn remove_charge() {
-    //     
-    // }
+    pub fn remove_charge(&mut self, x: f64, y: f64) {
+        let qnum = self.charge_nummber;
+        let xi = x - self.width as f64 / 2.0;
+        let yi = y - self.height as f64 / 2.0;
+        for k in 0..qnum {
+            let ri = self.charge[k].qs;
+            // let ri = 40.0;
+            let rxp = self.charge[k].x as f64 + ri;
+            let ryp = self.charge[k].y as f64 + ri;
+            let rxm = self.charge[k].x as f64 - ri;
+            let rym = self.charge[k].y as f64 - ri;
+            if xi <= rxp && xi >= rxm && yi <= ryp && yi >= rym {
+                self.charge.remove(k);
+                self.charge_nummber -= 1;
+                break;
+            }
+        }
+    }
 }

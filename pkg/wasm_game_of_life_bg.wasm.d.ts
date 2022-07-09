@@ -8,6 +8,7 @@ export function electricfield_height(a: number): number;
 export function electricfield_cqn(a: number): number;
 export function electricfield_get_pointer(a: number): number;
 export function electricfield_install_charge(a: number, b: number, c: number, d: number): void;
+export function electricfield_remove_charge(a: number, b: number, c: number): void;
 export function init_panic_hook(): void;
 export function main(a: number): void;
 export function __wbindgen_free(a: number, b: number): void;

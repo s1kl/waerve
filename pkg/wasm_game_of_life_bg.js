@@ -178,7 +178,7 @@ export class ElectricField {
     */
     cqn() {
         const ret = wasm.electricfield_cqn(this.ptr);
-        return ret;
+        return ret >>> 0;
     }
     /**
     * @returns {number}
@@ -194,6 +194,13 @@ export class ElectricField {
     */
     install_charge(q, x, y) {
         wasm.electricfield_install_charge(this.ptr, q, x, y);
+    }
+    /**
+    * @param {number} x
+    * @param {number} y
+    */
+    remove_charge(x, y) {
+        wasm.electricfield_remove_charge(this.ptr, x, y);
     }
 }
 

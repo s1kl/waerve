@@ -37,4 +37,9 @@ export class ElectricField {
 * @param {number} y
 */
   install_charge(q: number, x: number, y: number): void;
+/**
+* @param {number} x
+* @param {number} y
+*/
+  remove_charge(x: number, y: number): void;
 }
