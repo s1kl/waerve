@@ -108,31 +108,85 @@ impl ElectricField{
                 let cjxf = cjx as f64;
                 let cjyf = cjy as f64;
                 let distance = (cixf-cjxf)*(cixf-cjxf)+(ciyf-cjyf)*(ciyf-cjyf);
-                let ri = 20.0 * self.charge[i].q.abs();
-                let rj = 20.0 * self.charge[j].q.abs();
+                let ri = 20.0 * self.charge[i].q.abs().sqrt();// 馬鹿にならない回数のsqrt
+                let rj = 20.0 * self.charge[j].q.abs().sqrt();// charge.pushの時点で計算してcharge構造体の中に入れといたほうが...
                 let radius = (ri + rj) * (ri + rj);
                 if distance<=radius {
-                    let rs = (radius.sqrt()/2.0) as isize;
+                    let rs = (ri + rj) as isize;
                     let e = 0.005;
                     let vxi = self.charge[i].vx * e;
                     let vyi = self.charge[i].vy * e;
                     let vxj = self.charge[j].vx * e;
                     let vyj = self.charge[j].vy * e;
+                    let wp2 = self.width as isize / 2;
+                    let hp2 = self.height as isize / 2;
                     self.charge[i].fix_v(vxj, vyj);
                     self.charge[j].fix_v(vxi, vyi);
-                    if cix <= cjx && ciy <= cjy {
-                        self.charge[i].fix_p(cix - rs, ciy - rs);
-                        self.charge[j].fix_p(cjx + rs, cjy + rs);
-                    } else if cix >= cjx && ciy <= cjy {
-                        self.charge[i].fix_p(cix + rs, ciy - rs);
-                        self.charge[j].fix_p(cjx - rs, cjy + rs);
-                    } else if cix < cjx && ciy >= cjy {
-                        self.charge[i].fix_p(cix - rs, ciy + rs);
-                        self.charge[j].fix_p(cjx + rs, cjy - rs);
-                    } else if cix >= cjx && ciy >= cjy {
-                        self.charge[i].fix_p(cix + rs, ciy + rs);
-                        self.charge[j].fix_p(cjx - rs, cjy - rs);
+                    let mut cixn;
+                    let mut cjxn;
+                    let mut ciyn;
+                    let mut cjyn;
+                    if cix <= cjx {
+                        cixn = cix - rs;
+                        cjxn = cjx + rs;
+                        if cixn < -wp2 {
+                            cixn = -wp2;
+                            cjxn = -wp2+2*rs;
+                        }
+                        if cjxn > wp2 {
+                            cjxn = wp2;
+                            cixn = wp2-2*rs;
+                        }
+                    } else {
+                        cixn = cix + rs;
+                        cjxn = cjx - rs;
+                        if cixn > wp2 {
+                            cixn = wp2;
+                            cjxn = wp2-2*rs;
+                        }
+                        if cjxn < -wp2 {
+                            cjxn = -wp2;
+                            cixn = -wp2+2*rs;
+                        }
                     }
+                    if ciy <= cjy {
+                        ciyn = ciy - rs;
+                        cjyn = cjy + rs;
+                        if ciyn < -hp2 {
+                            ciyn = -hp2;
+                            cjyn = -hp2+2*rs;
+                        }
+                        if cjyn > hp2 {
+                            cjyn = hp2;
+                            ciyn = hp2-2*rs;
+                        }
+                    } else {
+                        ciyn = ciy + rs;
+                        cjyn = cjy - rs;
+                        if ciyn > hp2 {
+                            ciyn = hp2;
+                            cjyn = hp2-2*rs;
+                        }
+                        if cjyn < -hp2 {
+                            cjyn = -hp2;
+                            ciyn = -hp2+2*rs;
+                        }
+                    }
+                    self.charge[i].fix_p(cixn, ciyn);
+                    self.charge[j].fix_p(cjxn, cjyn);
+                    // if cix <= cjx && ciy <= cjy {
+                    //     self.charge[i].fix_p(cix - rs, ciy - rs);
+                    //     self.charge[j].fix_p(cjx + rs, cjy + rs);
+                    // } else if cix >= cjx && ciy <= cjy {
+                    //     self.charge[i].fix_p(cix + rs, ciy - rs);
+                    //     self.charge[j].fix_p(cjx - rs, cjy + rs);
+                    // } else if cix < cjx && ciy >= cjy {
+                    //     self.charge[i].fix_p(cix - rs, ciy + rs);
+                    //     self.charge[j].fix_p(cjx + rs, cjy - rs);
+                    // } else if cix >= cjx && ciy >= cjy {
+                    //     self.charge[i].fix_p(cix + rs, ciy + rs);
+                    //     self.charge[j].fix_p(cjx - rs, cjy - rs);
+                    // }
                 }
             } 
         }
@@ -210,9 +264,10 @@ impl ElectricField{
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
         charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
-        // charge.push(Charge::new(2.0, width as isize * 2 / 3 , height as isize / 3, width, height));
-        charge.push(Charge::new(-1.0, width as isize * 1 / 3 , height as isize * 2 / 3, width, height));
-        // charge.push(Charge::new(4.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
+        charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
+        //charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize / 3, width, height));
+        // charge.push(Charge::new(1.0, width as isize , height as isize * 2 / 3, width, height));
+        // charge.push(Charge::new(1.0, width as isize , height as isize * 1 / 3, width, height));
         let qnum = charge.len() as u8;
     
         ElectricField{
