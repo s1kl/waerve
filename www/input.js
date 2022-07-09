@@ -1,11 +1,9 @@
-export function mouse_coordinate(e) {
+export function install(e) {
+    const xy = get_mouse_coordinate(e, this.canvasClientWidth,  this.canvasClientHeight, this.canvasWidth, this.canvasHeight)
+    this.electricField.install_charge(1.0, xy[0], xy[1], this.canvasWidth, this.canvasHeight)
+}
+
+function get_mouse_coordinate(e, canvasClientWidth,  canvasClientHeight, canvasWidth, canvasHeight) {
     const rect = e.target.getBoundingClientRect()
-    const viewX = e.clientX - rect.left
-    const viewY = e.clientY - rect.top
-    const scaleWidth =  this.canvasClientWidth / this.canvasWidth
-    const scaleHeight = this.canvasClientHeight / this.canvasHeight
-    const canvasX = Math.floor(viewX / scaleWidth)
-    const canvasY = Math.floor(viewY / scaleHeight)
-    // console.log(canvasX, canvasY)
-    this.electricField.install_charge(1.0, canvasX, canvasY, this.canvasWidth, this.canvasHeight)
+    return [Math.floor((e.clientX - rect.left) * canvasWidth / canvasClientWidth), Math.floor((e.clientY - rect.top) * canvasHeight / canvasClientHeight)]
 }

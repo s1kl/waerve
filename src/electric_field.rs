@@ -93,7 +93,7 @@ impl ElectricField{
         }
     }
 
-    pub fn colision(&mut self){
+    pub fn colision(&mut self) {
         let qnum = self.charge_nummber;
         for k in 1..qnum {
             for l in 0..k {
@@ -108,8 +108,8 @@ impl ElectricField{
                 let cjxf = cjx as f64;
                 let cjyf = cjy as f64;
                 let distance = (cixf-cjxf)*(cixf-cjxf)+(ciyf-cjyf)*(ciyf-cjyf);
-                let ri = 20.0 * self.charge[i].q.abs().sqrt();// 馬鹿にならない回数のsqrt
-                let rj = 20.0 * self.charge[j].q.abs().sqrt();// charge.pushの時点で計算してcharge構造体の中に入れといたほうが...
+                let ri = self.charge[i].qs;
+                let rj = self.charge[j].qs;
                 let radius = (ri + rj) * (ri + rj);
                 if distance<=radius {
                     let rs = (ri + rj) as isize;
@@ -174,19 +174,6 @@ impl ElectricField{
                     }
                     self.charge[i].fix_p(cixn, ciyn);
                     self.charge[j].fix_p(cjxn, cjyn);
-                    // if cix <= cjx && ciy <= cjy {
-                    //     self.charge[i].fix_p(cix - rs, ciy - rs);
-                    //     self.charge[j].fix_p(cjx + rs, cjy + rs);
-                    // } else if cix >= cjx && ciy <= cjy {
-                    //     self.charge[i].fix_p(cix + rs, ciy - rs);
-                    //     self.charge[j].fix_p(cjx - rs, cjy + rs);
-                    // } else if cix < cjx && ciy >= cjy {
-                    //     self.charge[i].fix_p(cix - rs, ciy + rs);
-                    //     self.charge[j].fix_p(cjx + rs, cjy - rs);
-                    // } else if cix >= cjx && ciy >= cjy {
-                    //     self.charge[i].fix_p(cix + rs, ciy + rs);
-                    //     self.charge[j].fix_p(cjx - rs, cjy - rs);
-                    // }
                 }
             } 
         }
@@ -223,10 +210,6 @@ impl ElectricField{
                 
             }
         }
-        // for i in 0..self.charge.len() as usize {
-        //     let idx = self.get_index_i(self.charge[i].y + h as isize/2, self.charge[i].x + w as isize/2 + (20.0 * self.charge[i].q.sqrt()) as isize);
-        //     next[4 * idx + 1]=255;
-        // }
         self.electric_field_render = next;
     }
 }
@@ -264,10 +247,7 @@ impl ElectricField{
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let mut charge: Vec<Charge> = Vec::new();
         charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
-        charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
-        //charge.push(Charge::new(1.0, width as isize * 2 / 3 , height as isize / 3, width, height));
-        // charge.push(Charge::new(1.0, width as isize , height as isize * 2 / 3, width, height));
-        // charge.push(Charge::new(1.0, width as isize , height as isize * 1 / 3, width, height));
+        charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
         let qnum = charge.len() as u8;
     
         ElectricField{
@@ -305,16 +285,7 @@ impl ElectricField{
         self.charge_nummber+=1;
     }
 
-    pub fn cx0(&self) -> isize { self.charge[0].x() }
-    pub fn cy0(&self) -> isize { self.charge[0].y() }
-    pub fn cvx0(&self) -> f64 { self.charge[0].vx() }
-    pub fn cvy0(&self) -> f64 { self.charge[0].vy() }
-    pub fn cax0(&self) -> f64 { self.charge[0].ax() }
-    pub fn cay0(&self) -> f64 { self.charge[0].ay() }
-    pub fn cx1(&self) -> isize { self.charge[1].x() }
-    pub fn cy1(&self) -> isize { self.charge[1].y() }
-    pub fn cvx1(&self) -> f64 { self.charge[1].vx() }
-    pub fn cvy1(&self) -> f64 { self.charge[1].vy() }
-    pub fn cax1(&self) -> f64 { self.charge[1].ax() }
-    pub fn cay1(&self) -> f64 { self.charge[1].ay() }
+    // pub fn remove_charge() {
+    //     
+    // }
 }

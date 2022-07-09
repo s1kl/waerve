@@ -1,5 +1,6 @@
 pub struct Charge {
     pub q: f64,
+    pub qs: f64,
     pub x: isize,
     pub y: isize,
     pub vx: f64,
@@ -13,10 +14,12 @@ pub struct Charge {
 impl Charge{
     pub fn new(qi: f64, xi: isize, yi: isize, w: usize, h: usize) -> Charge{
         let q: f64 = qi;
+        let qs: f64 = 20.0 * qi.abs().sqrt();
         let x: isize = xi - w as isize / 2;
         let y: isize = yi - h as isize / 2;
         Charge{
             q,
+            qs,
             x,
             y,
             vx: 0.0,
@@ -28,7 +31,7 @@ impl Charge{
         }
     }
 
-    pub fn calc_v_p_charge(&mut self){
+    pub fn calc_v_p_charge(&mut self) {
         let dt = 0.005;
         let next_vx: f64 = self.vx - self.ax * dt;
         let next_vy: f64 = self.vy - self.ay * dt;
@@ -63,11 +66,4 @@ impl Charge{
         self.vx = vx;
         self.vy = vy;
     }
-
-    pub fn x(&self) -> isize { self.x }
-    pub fn y(&self) -> isize { self.y }
-    pub fn vx(&self) -> f64 { self.vx }
-    pub fn vy(&self) -> f64 { self.vy }
-    pub fn ax(&self) -> f64 { self.ax }
-    pub fn ay(&self) -> f64 { self.ay }
 }
