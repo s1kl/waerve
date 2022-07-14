@@ -309,7 +309,7 @@ impl ElectricField{
         }
     }
 
-    pub fn can_move_charge(&mut self, x: f64, y: f64) {
+    pub fn control_charge(&mut self, x: f64, y: f64) {
         let qnum = self.charge_nummber;
         let xi = x - self.width as f64 / 2.0;
         let yi = y - self.height as f64 / 2.0;
@@ -320,18 +320,29 @@ impl ElectricField{
             let rxm = self.charge[k].x as f64 - ri;
             let rym = self.charge[k].y as f64 - ri;
             if xi <= rxp && xi >= rxm && yi <= ryp && yi >= rym {
-                self.charge[k].can_move();
+                self.charge[k].control_move();
                 break;
             }
         }
     }
 
-    pub fn cannot_move_charge(&mut self) {
+    pub fn not_control_charge(&mut self) {
         let qnum = self.charge_nummber;
         for k in 0..qnum {
             if self.charge[k].cm == true {
-                self.charge[k].can_move();
+                self.charge[k].control_move();
                 break;
+            }
+        }
+    }
+
+    pub fn mouse_charge(&mut self, x:isize, y:isize) {
+        let qnum = self.charge_nummber;
+        let xi = x - self.width as isize / 2;
+        let yi = y - self.height as isize / 2;
+        for k in 0..qnum {
+            if self.charge[k].cm == true {
+                self.charge[k].mouse(xi, yi)
             }
         }
     }

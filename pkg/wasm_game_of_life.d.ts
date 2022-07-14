@@ -46,10 +46,15 @@ export class ElectricField {
 * @param {number} x
 * @param {number} y
 */
-  can_move_charge(x: number, y: number): void;
+  control_charge(x: number, y: number): void;
 /**
 */
-  cannot_move_charge(): void;
+  not_control_charge(): void;
+/**
+* @param {number} x
+* @param {number} y
+*/
+  mouse_charge(x: number, y: number): void;
 /**
 * @returns {boolean}
 */

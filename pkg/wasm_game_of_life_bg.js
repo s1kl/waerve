@@ -206,13 +206,20 @@ export class ElectricField {
     * @param {number} x
     * @param {number} y
     */
-    can_move_charge(x, y) {
-        wasm.electricfield_can_move_charge(this.ptr, x, y);
+    control_charge(x, y) {
+        wasm.electricfield_control_charge(this.ptr, x, y);
     }
     /**
     */
-    cannot_move_charge() {
-        wasm.electricfield_cannot_move_charge(this.ptr);
+    not_control_charge() {
+        wasm.electricfield_not_control_charge(this.ptr);
+    }
+    /**
+    * @param {number} x
+    * @param {number} y
+    */
+    mouse_charge(x, y) {
+        wasm.electricfield_mouse_charge(this.ptr, x, y);
     }
     /**
     * @returns {boolean}

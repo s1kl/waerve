@@ -16,6 +16,7 @@ const cheight = canvas.clientHeight;
 const ctx = canvas.getContext('2d');
 const input_radio = document.getElementsByName("input_radio");
 let radio = 'install';
+let control = false;
 
 const render = () => {
   main(electricField);
@@ -45,17 +46,28 @@ function input(e) {
     electricField.install_charge(1.0, xy[0], xy[1], width, height)
   } else if (radio == 'remove') {
     electricField.remove_charge(xy[0], xy[1], width, height)
-  } else if (radio == 'fix') {
-    electricField.can_move_charge(xy[0], xy[1])
+  } else if (radio == 'control') {
+    control = true;
+    electricField.control_charge(xy[0], xy[1])
+  }
+}
+
+function mouseMove(e) {
+  if (radio == 'control' && control) {
+    const xy = get_mouse_coordinate(e, cwidth,  cheight, width, height)
+    electricField.mouse_charge(xy[0], xy[1])
+    console.log(xy)
   }
 }
 
 function mouseUp(e) {
-  if (radio == 'fix') {
-    electricField.cannot_move_charge()
+  if (radio == 'control') {
+    control = false;
+    electricField.not_control_charge()
   }
 }
 
 input_radio.forEach(function(e) { e.addEventListener('click', radio_situation) });
 canvas.addEventListener('mousedown', input);
+canvas.addEventListener('mousemove', mouseMove);
 document.addEventListener('mouseup', mouseUp);

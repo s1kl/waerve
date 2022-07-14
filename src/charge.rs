@@ -69,8 +69,15 @@ impl Charge{
         self.vy = vy;
     }
 
-    pub fn can_move(&mut self) {
+    pub fn control_move(&mut self) {
         self.cm = !self.cm;
+    }
+    
+    pub fn mouse(&mut self, x:isize, y:isize) {
+        self.vx = 0.0;
+        self.vy = 0.0;
+        self.x = x;
+        self.y = y;
     }
 
     pub fn test(&self) -> bool {self.cm}
