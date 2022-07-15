@@ -113,12 +113,12 @@ impl ElectricField{
                 let ciyf = ciy as f64;
                 let cjxf = cjx as f64;
                 let cjyf = cjy as f64;
-                let distance = (cixf-cjxf)*(cixf-cjxf)+(ciyf-cjyf)*(ciyf-cjyf);
+                let d = (cixf-cjxf)*(cixf-cjxf)+(ciyf-cjyf)*(ciyf-cjyf);
                 let ri = self.charge[k].qs;
                 let rj = self.charge[l].qs;
                 let radius = (ri + rj) * (ri + rj);
-                if distance<=radius {
-                    let rs = (ri + rj) as isize;
+                if d <= radius {
+                    let lap = (ri.abs() + rj.abs() - d.sqrt()) as isize / 2;
                     let e = 0.005;
                     let vxi = self.charge[k].vx * e;
                     let vyi = self.charge[k].vy * e;
@@ -133,49 +133,49 @@ impl ElectricField{
                     let mut ciyn;
                     let mut cjyn;
                     if cix <= cjx {
-                        cixn = cix - rs;
-                        cjxn = cjx + rs;
+                        cixn = cix - lap;
+                        cjxn = cjx + lap;
                         if cixn < -wp2 {
                             cixn = -wp2;
-                            cjxn = -wp2+2*rs;
+                            cjxn = -wp2+2*lap;
                         }
                         if cjxn > wp2 {
                             cjxn = wp2;
-                            cixn = wp2-2*rs;
+                            cixn = wp2-2*lap;
                         }
                     } else {
-                        cixn = cix + rs;
-                        cjxn = cjx - rs;
+                        cixn = cix + lap;
+                        cjxn = cjx - lap;
                         if cixn > wp2 {
                             cixn = wp2;
-                            cjxn = wp2-2*rs;
+                            cjxn = wp2-2*lap;
                         }
                         if cjxn < -wp2 {
                             cjxn = -wp2;
-                            cixn = -wp2+2*rs;
+                            cixn = -wp2+2*lap;
                         }
                     }
                     if ciy <= cjy {
-                        ciyn = ciy - rs;
-                        cjyn = cjy + rs;
+                        ciyn = ciy - lap;
+                        cjyn = cjy + lap;
                         if ciyn < -hp2 {
                             ciyn = -hp2;
-                            cjyn = -hp2+2*rs;
+                            cjyn = -hp2+2*lap;
                         }
                         if cjyn > hp2 {
                             cjyn = hp2;
-                            ciyn = hp2-2*rs;
+                            ciyn = hp2-2*lap;
                         }
                     } else {
-                        ciyn = ciy + rs;
-                        cjyn = cjy - rs;
+                        ciyn = ciy + lap;
+                        cjyn = cjy - lap;
                         if ciyn > hp2 {
                             ciyn = hp2;
-                            cjyn = hp2-2*rs;
+                            cjyn = hp2-2*lap;
                         }
                         if cjyn < -hp2 {
                             cjyn = -hp2;
-                            ciyn = -hp2+2*rs;
+                            ciyn = -hp2+2*lap;
                         }
                     }
                     if !self.charge[k].fix {
@@ -215,7 +215,7 @@ impl ElectricField{
                 let idx4 = 4 * idx;
                 let efx_idx = self.compression_f64_u8(efx[idx]);
                 next[idx4] = efx_idx;
-                next[idx4+1] = 0;
+                next[idx4+1] = efx_idx;
                 next[idx4+2] = efx_idx;
                 
             }
@@ -255,11 +255,13 @@ impl ElectricField{
         let electric_field_x: Vec<f64> = vec![0.0; n];
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
-        let mut charge: Vec<Charge> = Vec::new();
-        charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
-        charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
-        charge.push(Charge::new(1.0, width as isize *  3 / 4 , height as isize * 1 / 4, width, height));
-        let qnum = charge.len() as usize;
+        let charge: Vec<Charge> = Vec::new();
+        // let mut charge: Vec<Charge> = Vec::new();
+        // charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
+        // charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
+        // charge.push(Charge::new(1.0, width as isize *  3 / 4 , height as isize * 1 / 4, width, height));
+        // let qnum = charge.len() as usize;
+        let qnum = 0;
     
         ElectricField{
             width,

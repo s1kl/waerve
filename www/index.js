@@ -17,6 +17,9 @@ const ctx = canvas.getContext('2d');
 const input_radio = document.getElementsByName("input_radio");
 let radio = 'install';
 let control = false;
+const range = document.getElementById('range');
+const rangev = document.getElementById('rangev');
+let rangeq = 10;
 
 const render = () => {
   main(electricField);
@@ -25,7 +28,6 @@ const render = () => {
 
 const renderLoop = () => {
   render();
-  console.log(electricField.test2())
   requestAnimationFrame(renderLoop);
 };
 
@@ -43,7 +45,7 @@ function radio_situation() {
 function input(e) {
   const xy = get_mouse_coordinate(e, cwidth,  cheight, width, height)
   if (radio == 'install') {
-    electricField.install_charge(1.0, xy[0], xy[1], width, height)
+    electricField.install_charge(rangeq/10, xy[0], xy[1], width, height)
   } else if (radio == 'remove') {
     electricField.remove_charge(xy[0], xy[1], width, height)
   } else if (radio == 'control') {
@@ -52,14 +54,12 @@ function input(e) {
   } else if (radio == 'fix') {
     electricField.fix_charge(xy[0], xy[1])
   }
-  console.log(radio)
 }
 
 function mouseMove(e) {
   if (radio == 'control' && control) {
     const xy = get_mouse_coordinate(e, cwidth,  cheight, width, height)
     electricField.mouse_charge(xy[0], xy[1])
-    console.log(xy)
   }
 }
 
@@ -70,7 +70,19 @@ function mouseUp(e) {
   }
 }
 
+function get_range(e) {
+  rangeq = Number(range.value)
+  if (rangeq <= 0) {
+    rangeq-=1;
+  }
+  rangev.innerHTML = rangeq;
+}
+
 input_radio.forEach(function(e) { e.addEventListener('click', radio_situation) });
 canvas.addEventListener('mousedown', input);
 canvas.addEventListener('mousemove', mouseMove);
 document.addEventListener('mouseup', mouseUp);
+range.addEventListener('input', get_range);
+
+radio_situation();
+get_range();
