@@ -222,6 +222,13 @@ export class ElectricField {
         wasm.electricfield_mouse_charge(this.ptr, x, y);
     }
     /**
+    * @param {number} x
+    * @param {number} y
+    */
+    fix_charge(x, y) {
+        wasm.electricfield_fix_charge(this.ptr, x, y);
+    }
+    /**
     * @returns {boolean}
     */
     test2() {

@@ -8,6 +8,7 @@ pub struct Charge {
     pub ax: f64,
     pub ay: f64,
     pub cm: bool,
+    pub fix: bool,
     w: usize,
     h: usize,
 }
@@ -28,6 +29,7 @@ impl Charge{
             ax: 0.0,
             ay: 0.0,
             cm: false,
+            fix: false,
             w: w,
             h: h,
         }
@@ -59,12 +61,12 @@ impl Charge{
         }
     }
 
-    pub fn fix_p(&mut self, x: isize, y: isize) {
+    pub fn improve_p(&mut self, x: isize, y: isize) {
         self.x = x;
         self.y = y;
     }
 
-    pub fn fix_v(&mut self, vx: f64, vy: f64) {
+    pub fn improve_v(&mut self, vx: f64, vy: f64) {
         self.vx = vx;
         self.vy = vy;
     }
@@ -80,5 +82,9 @@ impl Charge{
         self.y = y;
     }
 
-    pub fn test(&self) -> bool {self.cm}
+    pub fn fix(&mut self) {
+        self.fix = !self.fix;
+    }
+
+    pub fn test(&self) -> bool {self.fix}
 }

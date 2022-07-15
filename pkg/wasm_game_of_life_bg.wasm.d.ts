@@ -12,6 +12,7 @@ export function electricfield_remove_charge(a: number, b: number, c: number): vo
 export function electricfield_control_charge(a: number, b: number, c: number): void;
 export function electricfield_not_control_charge(a: number): void;
 export function electricfield_mouse_charge(a: number, b: number, c: number): void;
+export function electricfield_fix_charge(a: number, b: number, c: number): void;
 export function electricfield_test2(a: number): number;
 export function init_panic_hook(): void;
 export function main(a: number): void;

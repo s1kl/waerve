@@ -95,7 +95,9 @@ impl ElectricField{
     pub fn calc_v_p(&mut self) {
         let qnum = self.charge_nummber;
         for k in 0..qnum {
-            self.charge[k].calc_v_p_charge();
+            if !self.charge[k].fix {
+                self.charge[k].calc_v_p_charge();
+            }
         }
     }
 
@@ -124,8 +126,8 @@ impl ElectricField{
                     let vyj = self.charge[l].vy * e;
                     let wp2 = self.width as isize / 2;
                     let hp2 = self.height as isize / 2;
-                    self.charge[k].fix_v(vxj, vyj);
-                    self.charge[l].fix_v(vxi, vyi);
+                    self.charge[k].improve_v(vxj, vyj);
+                    self.charge[l].improve_v(vxi, vyi);
                     let mut cixn;
                     let mut cjxn;
                     let mut ciyn;
@@ -176,8 +178,12 @@ impl ElectricField{
                             ciyn = -hp2+2*rs;
                         }
                     }
-                    self.charge[k].fix_p(cixn, ciyn);
-                    self.charge[l].fix_p(cjxn, cjyn);
+                    if !self.charge[k].fix {
+                        self.charge[k].improve_p(cixn, ciyn);
+                    }
+                    if !self.charge[l].fix {
+                        self.charge[l].improve_p(cjxn, cjyn);
+                    }
                 }
             } 
         }
@@ -343,6 +349,23 @@ impl ElectricField{
         for k in 0..qnum {
             if self.charge[k].cm == true {
                 self.charge[k].mouse(xi, yi)
+            }
+        }
+    }
+
+    pub fn fix_charge(&mut self, x: f64, y: f64) {
+        let qnum = self.charge_nummber;
+        let xi = x - self.width as f64 / 2.0;
+        let yi = y - self.height as f64 / 2.0;
+        for k in 0..qnum {
+            let ri = self.charge[k].qs;
+            let rxp = self.charge[k].x as f64 + ri;
+            let ryp = self.charge[k].y as f64 + ri;
+            let rxm = self.charge[k].x as f64 - ri;
+            let rym = self.charge[k].y as f64 - ri;
+            if xi <= rxp && xi >= rxm && yi <= ryp && yi >= rym {
+                self.charge[k].fix();
+                break;
             }
         }
     }

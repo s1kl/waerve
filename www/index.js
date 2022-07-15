@@ -32,7 +32,7 @@ const renderLoop = () => {
 requestAnimationFrame(renderLoop);
 
 function radio_situation() {
-  for (let i = 0; i < 3; i++){
+  for (let i = 0; i < 4; i++){
     if (input_radio.item(i).checked){
       radio = input_radio.item(i).value;
       break;
@@ -49,7 +49,10 @@ function input(e) {
   } else if (radio == 'control') {
     control = true;
     electricField.control_charge(xy[0], xy[1])
+  } else if (radio == 'fix') {
+    electricField.fix_charge(xy[0], xy[1])
   }
+  console.log(radio)
 }
 
 function mouseMove(e) {

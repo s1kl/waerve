@@ -56,6 +56,11 @@ export class ElectricField {
 */
   mouse_charge(x: number, y: number): void;
 /**
+* @param {number} x
+* @param {number} y
+*/
+  fix_charge(x: number, y: number): void;
+/**
 * @returns {boolean}
 */
   test2(): boolean;
