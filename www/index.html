@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <canvas id="canvas"></canvas>
-    <input type="radio" name="input_radio" value="install" checked>
-    <input type="radio" name="input_radio" value="remove">
-    <input type="radio" name="input_radio" value="control">
-    <input type="radio" name="input_radio" value="fix">
+    <style>
+    body{
+      margin-left: 57ch;
+      margin-top: 8ch;
+    }
+    </style>
+    <span id="fps"></span>fps
+    <input type="radio" name="input_radio" id="install" value="install" checked>
+    <label for="install">install</label>
+    <input type="radio" name="input_radio" id="remove" value="remove">
+    <label for="remove">remove</label>
+    <input type="radio" name="input_radio" id="control" value="control">
+    <label for="control">control</label>
+    <input type="radio" name="input_radio" id="fix" value="fix">
+    <label for="fix">fix</label>
     <input type="range" id="range" value="10" min="-39" max="40" step="1">
     <span id="rangev"></span>
+    charge value
+    <br>
+    <canvas id="canvas"></canvas>
     <script src="./bootstrap.js"></script>
   </body>
 </html>

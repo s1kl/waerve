@@ -1,8 +1,8 @@
 use wasm_bindgen::prelude::*;
 use super::charge::Charge;
 
-const W_CONST: usize = 513;
-const H_CONST: usize = 513;
+const W_CONST: usize = 769;
+const H_CONST: usize = W_CONST;
 const K_CONST: f64 = 1000000000.0;
 const COLOR_CONST: f64 = 10000.0;
 const COLOR_MAX: u8 = 255;
@@ -256,11 +256,6 @@ impl ElectricField{
         let electric_field_y: Vec<f64> = vec![0.0; n];
         let electric_field_r: Vec<f64> = vec![0.0; n];
         let charge: Vec<Charge> = Vec::new();
-        // let mut charge: Vec<Charge> = Vec::new();
-        // charge.push(Charge::new(1.0, width as isize * 1 / 3 , height as isize / 3, width, height));
-        // charge.push(Charge::new(-1.0, width as isize * 2 / 3 , height as isize * 2 / 3, width, height));
-        // charge.push(Charge::new(1.0, width as isize *  3 / 4 , height as isize * 1 / 4, width, height));
-        // let qnum = charge.len() as usize;
         let qnum = 0;
     
         ElectricField{

@@ -26,12 +26,28 @@ const render = () => {
   ctx.putImageData(new ImageData(new Uint8ClampedArray(memory.buffer, electricField.get_pointer(), width * height * 4), width, height), 0, 0);
 }
 
-const renderLoop = () => {
-  render();
-  requestAnimationFrame(renderLoop);
-};
-
-requestAnimationFrame(renderLoop);
+function animation(){
+  let fps = 0;
+  let frameCount = 0;
+  let startTime;
+  let endTime;
+  startTime = new Date().getTime();
+  function animationLoop(){
+      frameCount ++;
+      endTime = new Date().getTime();
+      if(endTime - startTime >= 1000){
+          fps = frameCount;
+          frameCount = 0;
+          startTime = new Date().getTime();
+      }
+      render();
+      requestAnimationFrame(animationLoop);
+      let animationFPS = document.getElementById("fps");
+      animationFPS.innerHTML = fps;
+  }
+  animationLoop();
+}
+animation();
 
 function radio_situation() {
   for (let i = 0; i < 4; i++){
@@ -80,7 +96,7 @@ function get_range(e) {
 
 input_radio.forEach(function(e) { e.addEventListener('click', radio_situation) });
 canvas.addEventListener('mousedown', input);
-canvas.addEventListener('mousemove', mouseMove);
+canvas.addEventListener('mousemove', mouseMove);//touch系にも対応しようね
 document.addEventListener('mouseup', mouseUp);
 range.addEventListener('input', get_range);
 
